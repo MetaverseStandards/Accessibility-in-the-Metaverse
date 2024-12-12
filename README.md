@@ -37,7 +37,7 @@ Contact us: [accessibility-chair@lists.metaverse-standards.org](mailto:accessibi
 Michael Cooper | Dylan Fox | Erin Leary | James Maki
 --- | --- | --- | ---
 Working Group Chair | Working Group Chair | Working Group Chair | Working Group Chair
-Aihal Accessibility | [XR Access](https://xraccess.org/) | [Meta](https://about.meta.com/realitylabs/) | [Inclusive Reality](https://inclusivereality.com)
+[Aihal Accessibility](https://aihal-accessibility.com/) | [XR Access](https://xraccess.org/) | [Meta](https://about.meta.com/realitylabs/) | [Inclusive Reality](https://inclusivereality.com)
 [LinkedIn Profile](https://www.linkedin.com/in/michael-cooper-0b56401a/) | [LinkedIn Profile](https://www.linkedin.com/in/dylanrfox/) | [LinkedIn Profile](https://www.linkedin.com/in/erin-leary-b80b4499/) | [LinkedIn Profile](https://www.linkedin.com/in/jamesmaki/)
 
 ## Stay Informed
