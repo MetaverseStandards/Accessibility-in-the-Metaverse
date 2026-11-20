@@ -1,14 +1,16 @@
-# Metaverse Standards Forum | Accessibility in the Metaverse Working Group
+# Metaverse Standards Forum | Accessibility in the Metaverse
 
 [Accessibility in the Metaverse Landing Page](https://metaverse-standards.org/domain-groups/accessibility-in-the-metaverse/)
 
 ## Who We Are
 
-**We are a working group of the Metaverse Standards Forum dedicated to securing accessibility and inclusion for everyone in the metaverse.**
+**We are a subgroup of the Metaverse Standards Forum's 3D Assets Working Group, dedicated to securing accessibility and inclusion for everyone in the metaverse.**
 
 Our goal is to generate insights, identify risks, and recommend strategies and best practices to ensure that immersive experiences, environments, interfaces, and interactions are accessible to all, regardless of abilities or disabilities and access needs.
 
 Ultimately, we will support the creation of comprehensive XR standards on par with the [Web Content Accessibility Guidelines](https://www.w3.org/TR/WCAG22/). This will enable organizations to know with certainty whether their XR applications are accessible or not, and open the door to the next phase of ethical growth of the metaverse.
+
+Our main project is the **MSF XR Accessibility Guidelines**: testable accessibility criteria and real-world examples for virtual, augmented, and mixed reality. Version 1.0 was released for public review in July 2026, and we are now working on version 2.0. [Read and comment on the XR Accessibility Guidelines working document](https://docs.google.com/document/d/1wRHflVnJhRqZh6IvVAbWZGm0qXrkcJ2RxdRNaQjsMdY/edit?usp=sharing).
 
 [View Working Group Charter](https://portal.metaverse-standards.org/document/dl/7092)
 
@@ -30,15 +32,13 @@ If you’re having trouble, see our [full “How to Join” instructions](https:
 
 ## Working Group Chairs
 
-Metaverse Standards Form working groups address the interoperability challenges and opportunities that are vital to the driving the open metaverse.  These working groups are led by our volunteer chairs who give their time to help coordinate and drive discussions with members of the group.
+Metaverse Standards Forum groups address the interoperability challenges and opportunities that are vital to driving the open metaverse. These groups are led by volunteer chairs who give their time to help coordinate and drive discussions with members of the group.
 
 Contact us: [accessibility-chair@lists.metaverse-standards.org](mailto:accessibility-chair@lists.metaverse-standards.org)
 
-Michael Cooper | Dylan Fox | Erin Leary | James Maki
---- | --- | --- | ---
-Working Group Chair | Working Group Chair | Working Group Chair | Working Group Chair
-[Aihal Accessibility](https://aihal-accessibility.com/) | [XR Access](https://xraccess.org/) | [Meta](https://about.meta.com/realitylabs/) | [Inclusive Reality](https://inclusivereality.com)
-[LinkedIn Profile](https://www.linkedin.com/in/michael-cooper-0b56401a/) | [LinkedIn Profile](https://www.linkedin.com/in/dylanrfox/) | [LinkedIn Profile](https://www.linkedin.com/in/erin-leary-b80b4499/) | [LinkedIn Profile](https://www.linkedin.com/in/jamesmaki/)
+- **Michael Cooper**, [Aihal Accessibility](https://aihal-accessibility.com/) ([Michael Cooper on LinkedIn](https://www.linkedin.com/in/michael-cooper-0b56401a/))
+- **Dylan Fox**, Yahoo ([Dylan Fox on LinkedIn](https://www.linkedin.com/in/dylanrfox/))
+- **James Maki**, [Inclusive Reality](https://inclusivereality.com) ([James Maki on LinkedIn](https://www.linkedin.com/in/jamesmaki/))
 
 ## Stay Informed
 
