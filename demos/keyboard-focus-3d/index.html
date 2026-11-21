@@ -1,0 +1,787 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>Keyboard Focus in 3D</title>
+<style>
+  /* Layout: header, a 3D stage, a row of real buttons that act as the tab stops, settings, activity,
+     then what the demo covers and its limits. System fonts only, so the page makes no font requests. */
+  :root {
+    --bg: #f2f5f9;
+    --surface: #ffffff;
+    --fg: #141a26;
+    --muted: #485268;
+    --line: #cfd6e2;
+    --chip: #e6eaf2;
+    --focus: #1d4fd7;
+    --link: #1d4fd7;
+    --sel: #0a6a5f;
+    --sel-bg: #dff3ef;
+    --font-body: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    --font-mono: ui-monospace, 'Cascadia Mono', Menlo, Consolas, monospace;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #10141c;
+      --surface: #181e29;
+      --fg: #e8ecf3;
+      --muted: #a3aec2;
+      --line: #2b3445;
+      --chip: #232b3a;
+      --focus: #8db4ff;
+      --link: #8db4ff;
+      --sel: #5fd3c4;
+      --sel-bg: #14302d;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #10141c;
+    --surface: #181e29;
+    --fg: #e8ecf3;
+    --muted: #a3aec2;
+    --line: #2b3445;
+    --chip: #232b3a;
+    --focus: #8db4ff;
+    --link: #8db4ff;
+    --sel: #5fd3c4;
+    --sel-bg: #14302d;
+    color-scheme: dark;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font: 15px/1.55 var(--font-body);
+    padding-block: 28px 48px;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+  .wrap { max-width: 960px; margin-inline: auto; display: flex; flex-direction: column; gap: 28px; }
+  section { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+
+  h1 { font-size: clamp(1.5rem, 1.2rem + 1.5vw, 2rem); line-height: 1.15; font-weight: 600; letter-spacing: -0.01em; margin: 0 0 8px; text-wrap: balance; }
+  h2 { font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; color: var(--muted); margin: 0; }
+  h3 { margin: 0; font: 600 0.95rem var(--font-body); }
+  p { margin: 0; max-width: 68ch; }
+  a { color: var(--link); text-underline-offset: 2px; }
+  a:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; border-radius: 2px; }
+  .lede { color: var(--muted); font-size: 1rem; }
+  .lede + .lede { margin-top: 8px; }
+  .note { color: var(--muted); font-size: 0.9rem; }
+
+  kbd {
+    font: 500 0.78rem var(--font-mono);
+    background: var(--chip);
+    color: var(--fg);
+    border: 1px solid var(--line);
+    border-bottom-width: 2px;
+    border-radius: 4px;
+    padding: 1px 6px;
+    white-space: nowrap;
+  }
+
+  /* 3D stage. The canvas and everything drawn over it is hidden from assistive technology. */
+  .stage { position: relative; aspect-ratio: 4 / 3; background: #263044; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; touch-action: pan-y; }
+  @media (min-width: 561px) { .stage { aspect-ratio: 16 / 9; } }
+  .stage a-scene[embedded] { position: absolute; inset: 0; width: 100%; height: 100%; }
+  /* A-Frame's built-in fullscreen and VR buttons would add unlabeled tab stops inside the hidden canvas. */
+  .stage .a-enter-vr, .stage .a-enter-ar, .stage .a-orientation-modal { display: none !important; }
+  .tag {
+    position: absolute; z-index: 2; left: 0; top: 0;
+    transform: translate(-50%, -100%);
+    background: #ffffff; color: #0a0e16;
+    font: 500 0.78rem var(--font-mono);
+    padding: 3px 9px; border-radius: 4px;
+    pointer-events: none; white-space: nowrap;
+  }
+  /* Edge marker for a focused object that is out of view. The arrow points toward it. */
+  .offmark {
+    position: absolute; z-index: 2; left: 0; top: 0;
+    transform: translate(-50%, -50%);
+    display: flex; align-items: center; gap: 6px;
+    background: #ffffff; color: #0a0e16;
+    border: 2px solid #0a0e16; border-radius: 4px;
+    font: 500 0.78rem var(--font-mono);
+    padding: 3px 9px 3px 5px;
+    pointer-events: none; white-space: nowrap;
+  }
+  .offmark svg { width: 18px; height: 18px; flex: none; fill: none; stroke: currentColor; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* The real tab stops */
+  .objects { display: grid; grid-template-columns: 1fr; gap: 8px; }
+  @media (min-width: 720px) { .objects { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+  .obj {
+    appearance: none; font: inherit; color: inherit; text-align: left; cursor: pointer;
+    background: var(--surface);
+    border: 2px solid var(--line);
+    border-radius: 6px;
+    padding: 10px 12px;
+    min-height: 44px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-areas: "sw nm bd" "sw mt bd";
+    column-gap: 10px; align-items: center;
+  }
+  @media (min-width: 720px) {
+    .obj { grid-template-columns: auto 1fr; grid-template-areas: "sw nm" "mt mt" "bd bd"; row-gap: 2px; }
+  }
+  .obj .sw { grid-area: sw; width: 14px; height: 14px; border-radius: 50%; }
+  .obj .nm { grid-area: nm; font-weight: 600; }
+  .obj .mt { grid-area: mt; color: var(--muted); font-size: 0.85rem; }
+  .obj .bd {
+    grid-area: bd; justify-self: start;
+    font: 500 0.75rem var(--font-mono); text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--sel); visibility: hidden;
+  }
+  .obj[aria-pressed="true"] { border-color: var(--sel); background: var(--sel-bg); }
+  .obj[aria-pressed="true"] .bd { visibility: visible; }
+  .obj:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+
+  /* Scene block: the camera overlay shares the stage's grid cell but comes after the objects in the DOM,
+     so Tab reaches the five objects first and the camera buttons next. */
+  .scene-block { display: grid; grid-template-columns: minmax(0, 1fr); row-gap: 28px; }
+  .scene-cell { grid-area: 1 / 1; }
+  .objects-cell { grid-area: 2 / 1; }
+  .overlay { grid-area: 1 / 1; position: relative; z-index: 3; pointer-events: none; }
+
+  .hud { position: absolute; left: 10px; top: 10px; right: 10px; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+  .chip {
+    font: 500 0.78rem var(--font-mono); color: #e8ecf3;
+    background: rgba(10, 14, 22, 0.78); border-radius: 4px; padding: 3px 9px;
+    max-width: 100%; overflow-wrap: anywhere;
+  }
+  .chip.capt, .chip.loop { color: #0a0e16; background: #ffffff; }
+
+  .cam { position: absolute; left: 10px; right: 10px; bottom: 10px; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px 12px; }
+  .cg { display: flex; gap: 4px; }
+  .cbtn {
+    appearance: none; display: grid; place-items: center; width: 44px; height: 44px; padding: 0;
+    cursor: pointer; pointer-events: auto;
+    color: #ffffff; background: rgba(10, 14, 22, 0.78);
+    border: 1px solid rgba(255, 255, 255, 0.38); border-radius: 6px;
+  }
+  .cbtn:hover { background: rgba(44, 58, 86, 0.95); }
+  .cbtn:active { background: rgba(78, 96, 134, 0.98); }
+  .cbtn:focus-visible { outline: 3px solid #ffffff; outline-offset: 2px; box-shadow: 0 0 0 2px #0a0e16; }
+  .cbtn svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* Settings */
+  .panel { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 12px 14px; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+  .panel h3 { font: 600 0.78rem var(--font-body); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .settings { flex-direction: row; flex-wrap: wrap; align-items: center; gap: 4px 32px; }
+  .settings fieldset { border: 0; margin: 0; padding: 0; min-width: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 0 4px; }
+  .settings legend { float: left; font-weight: 600; margin-right: 8px; padding: 0; }
+  .opt { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding-inline: 6px; cursor: pointer; }
+  .opt input { width: 20px; height: 20px; margin: 0; accent-color: var(--focus); cursor: pointer; }
+  .opt input:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+
+  /* Activity */
+  .activity { display: grid; grid-template-columns: 1fr; gap: 14px; }
+  @media (min-width: 720px) { .activity { grid-template-columns: 1fr 1fr; } }
+  #status { font-size: 1.05rem; font-weight: 500; min-height: 1.6em; }
+  .log { list-style: none; margin: 0; padding: 0; font: 400 0.82rem var(--font-mono); }
+  .log li { display: grid; grid-template-columns: 7.5rem 1fr; gap: 8px; padding: 4px 0; border-top: 1px solid var(--line); min-width: 0; }
+  .log li:first-child { border-top: 0; }
+  .log .key { color: var(--muted); overflow-wrap: anywhere; }
+  .log .msg { overflow-wrap: anywhere; }
+
+  /* Criteria */
+  .crit { display: grid; grid-template-columns: 1fr; gap: 0 28px; margin: 0; }
+  @media (min-width: 720px) { .crit { grid-template-columns: 1fr 1fr; } }
+  .crit > div { border-top: 1px solid var(--line); padding: 10px 0 12px; min-width: 0; }
+  .crit dt { font-weight: 600; }
+  .crit dt .sc { display: block; font: 500 0.8rem var(--font-mono); color: var(--muted); }
+  .crit dd { margin: 2px 0 0; color: var(--muted); font-size: 0.92rem; max-width: 60ch; }
+  .exp {
+    display: inline-block; margin-left: 6px; vertical-align: 1px;
+    font: 500 0.7rem var(--font-mono); text-transform: uppercase; letter-spacing: 0.06em;
+    border: 1px solid var(--muted); color: var(--fg); border-radius: 3px; padding: 0 5px;
+  }
+  .limits { margin: 0; padding-left: 1.2em; max-width: 72ch; }
+  .limits li + li { margin-top: 6px; }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/aframe@1.6.0/dist/aframe-v1.6.0.min.js"></script>
+</head>
+<body>
+
+<main class="wrap">
+  <header>
+    <h1>Keyboard Focus in 3D</h1>
+    <p class="lede">Press <kbd>Tab</kbd> to move focus across the five objects, <kbd>Shift</kbd>+<kbd>Tab</kbd> to go back, and <kbd>Enter</kbd> or <kbd>Space</kbd> to select the focused one. Clicking an object works too.</p>
+    <p class="lede">While an object has focus, the arrow keys step through the objects and wrap around at the ends, so you can loop through the set. To look from any angle, use the icon buttons on the scene or drag across it. <kbd>Escape</kbd> hides the labels drawn on the scene.</p>
+  </header>
+
+  <div class="scene-block">
+  <section aria-label="3D scene" class="scene-cell">
+    <div class="stage" aria-hidden="true">
+      <a-scene id="scene" embedded
+        vr-mode-ui="enabled: false"
+        loading-screen="enabled: false"
+        device-orientation-permission-ui="enabled: false"
+        keyboard-shortcuts="enterVR: false"
+        renderer="antialias: true"
+        background="color: #263044"
+        cursor="rayOrigin: mouse"
+        raycaster="objects: .clickable">
+        <a-entity id="cam" camera="fov: 60" position="0 1.8 5.5"></a-entity>
+        <a-entity light="type: ambient; color: #cdd7ec; intensity: 0.75"></a-entity>
+        <a-entity light="type: directional; color: #ffffff; intensity: 0.9" position="2 4 3"></a-entity>
+        <a-entity geometry="primitive: plane; width: 18; height: 10" rotation="-90 0 0" position="0 0 -1" material="color: #1c2434; roughness: 1"></a-entity>
+      </a-scene>
+      <div class="tag" id="tag" hidden></div>
+      <div class="offmark" id="offmark" hidden>
+        <svg viewBox="0 0 24 24" focusable="false"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
+        <span id="offtext"></span>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="objects-h" class="objects-cell">
+    <h2 id="objects-h">Objects</h2>
+    <p class="note">The canvas is hidden from assistive technology. These native buttons are the tab stops, and each one drives its object in the scene. <kbd>Tab</kbd> leaves the set after the last object, so focus is never trapped. The arrow keys loop within it. The camera buttons on the scene come after the objects in the tab order.</p>
+    <div class="objects" id="objects" role="group" aria-labelledby="objects-h"></div>
+  </section>
+
+  <div class="overlay">
+    <div class="hud">
+      <div class="chip" id="viewout" aria-hidden="true">Aim center &middot; Orbit 0&deg; &middot; Tilt +8&deg; &middot; Zoom 5.6</div>
+      <div class="chip capt" id="capt" aria-hidden="true" hidden></div>
+      <div class="chip loop" id="loopchip" aria-hidden="true" hidden></div>
+    </div>
+    <div class="cam" role="group" aria-label="Camera controls">
+      <div class="cg">
+        <button type="button" class="cbtn" data-act="left" aria-label="Orbit left"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7"/></svg></button>
+        <button type="button" class="cbtn" data-act="right" aria-label="Orbit right"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 5l7 7-7 7"/></svg></button>
+        <button type="button" class="cbtn" data-act="up" aria-label="Orbit up"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 15l7-7 7 7"/></svg></button>
+        <button type="button" class="cbtn" data-act="down" aria-label="Orbit down"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 9l7 7 7-7"/></svg></button>
+      </div>
+      <div class="cg">
+        <button type="button" class="cbtn" data-act="in" aria-label="Zoom in"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21M10.5 7.5v6M7.5 10.5h6"/></svg></button>
+        <button type="button" class="cbtn" data-act="out" aria-label="Zoom out"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21M7.5 10.5h6"/></svg></button>
+      </div>
+      <div class="cg">
+        <button type="button" class="cbtn" data-act="reset" aria-label="Reset view"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg></button>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <section aria-labelledby="set-h">
+    <h2 id="set-h">Settings</h2>
+    <div class="panel settings">
+      <label class="opt"><input type="checkbox" id="follow" checked> Turn the view to the focused object</label>
+      <fieldset>
+        <legend>Camera speed</legend>
+        <label class="opt"><input type="radio" name="speed" value="slow"> Slow</label>
+        <label class="opt"><input type="radio" name="speed" value="medium" checked> Medium</label>
+        <label class="opt"><input type="radio" name="speed" value="fast"> Fast</label>
+      </fieldset>
+    </div>
+    <p class="note">Camera speed sets how far each camera button moves the view, how fast the view eases, and how far a drag turns it. When your system asks for reduced motion, the view jumps straight to each new position at any speed.</p>
+  </section>
+
+  <section aria-labelledby="act-h">
+    <h2 id="act-h">Activity</h2>
+    <div class="activity">
+      <div class="panel">
+        <h3>Status</h3>
+        <p id="status" role="status" aria-live="polite">Nothing is selected. Press Tab to focus an object, then press Enter or Space to select it.</p>
+      </div>
+      <div class="panel">
+        <h3>Input log</h3>
+        <ol class="log" id="log"><li data-empty="1"><span class="key">Waiting</span><span class="msg">No input yet.</span></li></ol>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="crit-h">
+    <h2 id="crit-h">What this demo covers</h2>
+
+    <h3 id="msf-h">MSF XR Accessibility Guidelines</h3>
+    <p class="note">These criteria come from the v2.0 draft of the Metaverse Standards Forum (MSF) <a href="https://docs.google.com/document/d/1wRHflVnJhRqZh6IvVAbWZGm0qXrkcJ2RxdRNaQjsMdY/edit?usp=sharing">XR Accessibility Guidelines working document</a>. The names below are short summaries; the working document has the full wording. Experimental statements are needs that are essential for full access but not yet widely implemented.</p>
+    <dl class="crit" aria-labelledby="msf-h">
+      <div><dt><span class="sc">Focus › Interactive Elements</span>A text label for every interactive element<span class="exp">Experimental</span></dt><dd>Each object's button gives its name, color and position in the set, plus whether it is selected.</dd></div>
+      <div><dt><span class="sc">Focus › Interactive Elements</span>A logical sequence to step through<span class="exp">Experimental</span></dt><dd>Focus moves through the objects from left to right, the order they stand in the scene.</dd></div>
+      <div><dt><span class="sc">Focus › Interactive Elements</span>The view turns to the focused element<span class="exp">Experimental</span></dt><dd>With the "Turn the view" setting on, focusing an object aims the camera at it. The readout on the scene names the object being aimed at.</dd></div>
+      <div><dt><span class="sc">Focus › Interactive Elements</span>A focus indicator, and where to find it when out of view<span class="exp">Experimental</span></dt><dd>A ring marks the focused object. If it is out of view, an arrow at the edge of the scene points to it, and the status message says where it is, such as "to your left" or "behind you".</dd></div>
+      <div><dt><span class="sc">Focus › Interactive Elements</span>"You have looped" feedback<span class="exp">Experimental</span></dt><dd>Arrow keys wrap from the last object to the first and back. Each wrap is announced, shown on the scene, and logged.</dd></div>
+      <div><dt><span class="sc">Focus › Interactive Elements</span>No major change of context from focus alone<span class="exp">Experimental</span></dt><dd>Focus only turns the view. Nothing is selected until you press Enter or Space or click, and you can turn off the view turning.</dd></div>
+      <div><dt><span class="sc">Focus › Content on Hover or Focus</span>Extra content on hover or focus can be dismissed, hovered and kept</dt><dd>Escape hides the object label and the camera button caption. A caption stays while the pointer is anywhere over the scene, and stays until it is dismissed or no longer applies.</dd></div>
+      <div><dt><span class="sc">Input Methods › Dragging Movements</span>Dragging actions work with a single pointer, without dragging</dt><dd>Orbit and tilt by dragging also have single-click buttons, along with zoom and reset.</dd></div>
+      <div><dt><span class="sc">Timing &amp; Difficulty › Speed of Interaction</span>User control of camera movement speed</dt><dd>The Camera speed setting offers slow, medium and fast for buttons, easing and dragging.</dd></div>
+    </dl>
+
+    <h3 id="wcag-h">WCAG 2.2</h3>
+    <p class="note">These link to the W3C Understanding page for each Web Content Accessibility Guidelines (WCAG) 2.2 success criterion.</p>
+    <dl class="crit" aria-labelledby="wcag-h">
+      <div><dt><a href="https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html">2.1.1 Keyboard</a></dt><dd>Tab, Shift+Tab, the arrow keys, Enter and Space reach and operate every object. The mouse is optional.</dd></div>
+      <div><dt><a href="https://www.w3.org/WAI/WCAG22/Understanding/no-keyboard-trap.html">2.1.2 No Keyboard Trap</a></dt><dd>Tab moves past the last object and Shift+Tab moves before the first. Only the arrow keys loop, so focus is never held in the scene.</dd></div>
+      <div><dt><a href="https://www.w3.org/WAI/WCAG22/Understanding/focus-order.html">2.4.3 Focus Order</a></dt><dd>Focus follows the left-to-right order of the objects in the scene, then moves on to the camera buttons and settings.</dd></div>
+      <div><dt><a href="https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html">2.4.7 Focus Visible</a></dt><dd>The focused object gets a white ring with a dark outline in 3D, and its button gets a 3px outline.</dd></div>
+      <div><dt><a href="https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html">1.4.1 Use of Color</a></dt><dd>A selected object is lifted, stands on a base disc and is labeled in text. Color is not the only cue.</dd></div>
+      <div><dt><a href="https://www.w3.org/WAI/WCAG22/Understanding/content-on-hover-or-focus.html">1.4.13 Content on Hover or Focus</a></dt><dd>Labels drawn on the scene can be dismissed with Escape, stay while the pointer moves over the scene, and stay until no longer valid.</dd></div>
+      <div><dt><a href="https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html">4.1.2 Name, Role, Value</a></dt><dd>Each object is a native button with a name and a pressed state. Settings are native, labeled form controls.</dd></div>
+      <div><dt><a href="https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html">4.1.3 Status Messages</a></dt><dd>Selecting, looping and out-of-view notices are announced through a polite live region.</dd></div>
+      <div><dt><a href="https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html">2.3.3 Animation from Interactions</a></dt><dd>The spin, the focus pulse and the camera easing stop when the system asks for reduced motion.</dd></div>
+      <div><dt><a href="https://www.w3.org/WAI/WCAG22/Understanding/dragging-movements.html">2.5.7 Dragging Movements</a></dt><dd>Orbiting and tilting by dragging also have single-click button alternatives.</dd></div>
+      <div><dt><a href="https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html">2.5.8 Target Size (Minimum)</a></dt><dd>Every button and setting, including the icon buttons on the scene, has a target at least 44px high, well above the 24px minimum.</dd></div>
+      <div><dt><a href="https://www.w3.org/WAI/WCAG22/Understanding/non-text-content.html">1.1.1 Non-text Content</a></dt><dd>Each icon button has a text name. The name also appears as a caption on the scene when the button has keyboard focus or the pointer is over it.</dd></div>
+      <div><dt><a href="https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html">1.4.11 Non-text Contrast</a></dt><dd>Icons are white on a dark panel, and the focus outline on them is white with a dark edge, so both stay visible over any part of the scene.</dd></div>
+    </dl>
+  </section>
+
+  <section aria-labelledby="lim-h">
+    <h2 id="lim-h">Limitations</h2>
+    <ul class="limits">
+      <li>This is a flat-screen web page, not a headset experience. The keyboard stands in for controllers, switches and other inputs, and the page buttons stand in for an accessibility layer that most XR platforms do not offer yet.</li>
+      <li>It shows one possible technique for each criterion. It is not the only way to meet them, and it is not evidence that any product conforms.</li>
+      <li>The experimental criteria are still in draft and may change.</li>
+      <li>Open question for the working group: is turning the view on focus a change of view, or a change of context? This demo treats it as a change of view and lets you turn it off.</li>
+    </ul>
+  </section>
+</main>
+
+<script>
+(function () {
+  var ITEMS = [
+    { id: 'sphere',   name: 'Sphere',   meta: 'amber',    color: '#e9a23b', geo: 'primitive: sphere; radius: 0.6; segmentsWidth: 32; segmentsHeight: 20' },
+    { id: 'cube',     name: 'Cube',     meta: 'teal',     color: '#2cb5a5', geo: 'primitive: box; width: 0.95; height: 0.95; depth: 0.95' },
+    { id: 'cone',     name: 'Cone',     meta: 'coral',    color: '#e5604b', geo: 'primitive: cone; radiusBottom: 0.68; radiusTop: 0; height: 1.25; segmentsRadial: 32' },
+    { id: 'torus',    name: 'Torus',    meta: 'violet',   color: '#9a86f0', geo: 'primitive: torus; radius: 0.48; radiusTubular: 0.2; segmentsRadial: 16; segmentsTubular: 36' },
+    { id: 'cylinder', name: 'Cylinder', meta: 'sky blue', color: '#4aa8ea', geo: 'primitive: cylinder; radius: 0.5; height: 1.1; segmentsRadial: 32' }
+  ];
+  var X0 = -3.6, DX = 1.8, N = ITEMS.length;
+
+  var scene = document.getElementById('scene');
+  var group = document.getElementById('objects');
+  var tag = document.getElementById('tag');
+  var offmark = document.getElementById('offmark');
+  var offtext = document.getElementById('offtext');
+  var offarrow = offmark.querySelector('svg');
+  var statusEl = document.getElementById('status');
+  var logEl = document.getElementById('log');
+  var loopChip = document.getElementById('loopchip');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var state = { focus: -1, hover: -1, selected: -1 };
+  var parts = [];
+  var lastInput = 'Tab';
+  var labelsDismissed = false;   // Escape hides the scene labels until focus or hover moves on
+  var pending = null;            // a focus announcement waiting for the view to settle
+  var loopMsg = '';
+
+  // Camera speed presets. Step is degrees per button press; ease is how fast the view catches up.
+  var SPEEDS = {
+    slow:   { label: 'Slow',   step: 10,  ease: 3,  drag: 0.2, zoom: 0.4 },
+    medium: { label: 'Medium', step: 15,  ease: 8,  drag: 0.4, zoom: 0.8 },
+    fast:   { label: 'Fast',   step: 30,  ease: 16, drag: 0.7, zoom: 1.4 }
+  };
+  var speed = SPEEDS.medium;
+  var follow = true;
+
+  function make(tagName, attrs, parent) {
+    var el = document.createElement(tagName);
+    for (var k in attrs) el.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(el);
+    return el;
+  }
+  function slotX(i) { return X0 + i * DX; }
+
+  function say(msg) { statusEl.textContent = msg; }
+
+  function log(key, text) {
+    var first = logEl.firstElementChild;
+    if (first && first.getAttribute('data-empty')) logEl.removeChild(first);
+    var li = document.createElement('li');
+    var k = document.createElement('span'); k.className = 'key'; k.textContent = key;
+    var m = document.createElement('span'); m.className = 'msg'; m.textContent = text;
+    li.appendChild(k); li.appendChild(m);
+    logEl.insertBefore(li, logEl.firstChild);
+    while (logEl.children.length > 6) logEl.removeChild(logEl.lastChild);
+  }
+
+  function updateTag() {
+    if (state.focus < 0 || labelsDismissed) { tag.hidden = true; return; }
+    var it = ITEMS[state.focus];
+    tag.textContent = it.name + (state.selected === state.focus ? ' · selected' : '');
+    tag.hidden = false;
+  }
+
+  function setFocus(i) { state.focus = i; labelsDismissed = false; updateTag(); }
+
+  function activate(i, via) {
+    var it = ITEMS[i];
+    if (state.selected === i) {
+      state.selected = -1;
+      say(it.name + ' deselected. Nothing is selected.');
+      log(via, 'Deselected ' + it.name);
+    } else {
+      state.selected = i;
+      say(it.name + ' selected.');
+      log(via, 'Selected ' + it.name);
+    }
+    parts.forEach(function (p, j) { p.btn.setAttribute('aria-pressed', j === state.selected ? 'true' : 'false'); });
+    updateTag();
+  }
+
+  var loopTimer = 0;
+  function flashLoop(text) {
+    loopChip.textContent = text;
+    loopChip.hidden = false;
+    clearTimeout(loopTimer);
+    loopTimer = setTimeout(function () { loopChip.hidden = true; }, 2500);
+  }
+
+  // Track which input caused the next focus or click, for the log.
+  document.addEventListener('keydown', function (e) {
+    lastInput = e.key === 'Tab' ? (e.shiftKey ? 'Shift+Tab' : 'Tab') : (e.key === ' ' ? 'Space' : e.key);
+  }, true);
+  document.addEventListener('pointerdown', function () { lastInput = 'Pointer'; }, true);
+
+  ITEMS.forEach(function (it, i) {
+    // Real DOM button: the tab stop and the accessible representation.
+    var btn = make('button', { type: 'button', 'class': 'obj', id: 'btn-' + it.id, 'aria-pressed': 'false' }, group);
+    var sw = make('span', { 'class': 'sw', 'aria-hidden': 'true' }, btn); sw.style.background = it.color;
+    make('span', { 'class': 'nm' }, btn).textContent = it.name;
+    make('span', { 'class': 'mt' }, btn).textContent = it.meta + ', ' + (i + 1) + ' of ' + N;
+    make('span', { 'class': 'bd', 'aria-hidden': 'true' }, btn).textContent = 'Selected';
+
+    // Matching 3D object.
+    var slot = make('a-entity', { position: slotX(i) + ' 1.1 0' }, scene);
+    var disc = make('a-entity', {
+      geometry: 'primitive: cylinder; radius: 0.78; height: 0.04; segmentsRadial: 40',
+      material: 'shader: flat; color: ' + it.color,
+      position: '0 -1.08 0'
+    }, slot);
+    // The ring group turns to face the camera each frame. Its children sit in front of the object.
+    var ring = make('a-entity', { position: '0 0.05 0' }, slot);
+    // Flat rings layer cleanly: a dark outline behind, a white band in front. They skip the depth test
+    // and draw last, so the focus ring stays visible even when other objects stand in front of it.
+    var ringOut = make('a-entity', { geometry: 'primitive: ring; radiusInner: 0.85; radiusOuter: 1.04; segmentsTheta: 64', material: 'shader: flat; color: #0a0e16; side: double; depthTest: false', position: '0 0 0.34' }, ring);
+    var ringIn = make('a-entity', { geometry: 'primitive: ring; radiusInner: 0.9; radiusOuter: 0.99; segmentsTheta: 64', material: 'shader: flat; color: #ffffff; side: double; depthTest: false', position: '0 0 0.35' }, ring);
+    [[ringOut, 10], [ringIn, 11]].forEach(function (r) {
+      r[0].addEventListener('loaded', function () { var m = r[0].getObject3D('mesh'); if (m) m.renderOrder = r[1]; });
+      r[0].addEventListener('object3dset', function () { var m = r[0].getObject3D('mesh'); if (m) m.renderOrder = r[1]; });
+    });
+    var body = make('a-entity', {
+      'class': 'clickable',
+      geometry: it.geo,
+      material: 'color: ' + it.color + '; emissive: ' + it.color + '; emissiveIntensity: 0; roughness: 0.55; metalness: 0.1'
+    }, slot);
+
+    parts.push({ btn: btn, slot: slot, disc: disc, ring: ring, body: body });
+
+    btn.addEventListener('focus', function () {
+      setFocus(i);
+      log(lastInput, 'Focus on ' + it.name);
+      if (follow) { goal.tx = slotX(i); goal.aim = i; updateReadout(); }
+      // Announce once the view has settled, so the out-of-view check uses where the camera ends up.
+      pending = { msg: loopMsg, t: performance.now() };
+      loopMsg = '';
+    });
+    btn.addEventListener('blur', function () { if (state.focus === i) setFocus(-1); });
+    btn.addEventListener('click', function (e) { activate(i, e.detail === 0 ? lastInput : 'Click'); });
+
+    body.addEventListener('mouseenter', function () { state.hover = i; if (scene.canvas) scene.canvas.style.cursor = 'pointer'; });
+    body.addEventListener('mouseleave', function () { state.hover = -1; if (scene.canvas) scene.canvas.style.cursor = ''; });
+    body.addEventListener('click', function () { if (dragged) return; btn.focus(); activate(i, 'Pointer'); });
+  });
+
+  // Arrow keys step through the objects and wrap at the ends: the "you have looped" feedback.
+  // Tab still moves out of the set, so the loop never traps focus.
+  group.addEventListener('keydown', function (e) {
+    var i = -1;
+    parts.forEach(function (p, j) { if (p.btn === document.activeElement) i = j; });
+    if (i < 0 || e.altKey || e.ctrlKey || e.metaKey) return;
+    var j;
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') j = i + 1;
+    else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') j = i - 1;
+    else if (e.key === 'Home') j = 0;
+    else if (e.key === 'End') j = N - 1;
+    else return;
+    e.preventDefault();
+    if (j >= N) {
+      j = 0;
+      loopMsg = 'Looped back to the first object.';
+      flashLoop('Looped to the first object');
+      log(e.key, 'Looped to the start');
+    } else if (j < 0) {
+      j = N - 1;
+      loopMsg = 'Looped to the last object.';
+      flashLoop('Looped to the last object');
+      log(e.key, 'Looped to the end');
+    }
+    parts[j].btn.focus();
+  });
+
+  // Viewpoint: the camera orbits an aim point from any angle. Orbit turns a full circle, and
+  // tilt runs from straight above to straight below. Buttons and dragging set the same goal values.
+  var cam = document.getElementById('cam');
+  var viewOut = document.getElementById('viewout');
+  var capt = document.getElementById('capt');
+  var stage = document.querySelector('.stage');
+  var RAD = Math.PI / 180, TAU = Math.PI * 2;
+  var MAX_EL = 85 * RAD, MIN_D = 3.2, MAX_D = 10;
+  var HOME = { az: 0, el: 8 * RAD, d: 5.6, tx: 0 };
+  var view = { az: HOME.az, el: HOME.el, d: HOME.d, tx: HOME.tx };            // what is drawn
+  var goal = { az: HOME.az, el: HOME.el, d: HOME.d, tx: HOME.tx, aim: -1 };   // what the controls ask for
+  var drag = null, dragged = false;
+
+  function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+  function signed(n) { return (n > 0 ? '+' : '') + n; }
+
+  function viewText() {
+    var az = ((Math.round(goal.az / RAD) + 180) % 360 + 360) % 360 - 180;
+    if (az === -180) az = 180;
+    var aim = goal.aim >= 0 ? ITEMS[goal.aim].name : 'center';
+    return 'Aim ' + aim + ' · Orbit ' + signed(az) + '° · Tilt ' + signed(Math.round(goal.el / RAD)) + '° · Zoom ' + goal.d.toFixed(1);
+  }
+  function updateReadout() { viewOut.textContent = viewText(); }
+
+  var ACTIONS = {
+    left:  function () { goal.az -= speed.step * RAD; },
+    right: function () { goal.az += speed.step * RAD; },
+    up:    function () { goal.el = clamp(goal.el + speed.step * RAD, -MAX_EL, MAX_EL); },
+    down:  function () { goal.el = clamp(goal.el - speed.step * RAD, -MAX_EL, MAX_EL); },
+    'in':  function () { goal.d = clamp(goal.d - speed.zoom, MIN_D, MAX_D); },
+    out:   function () { goal.d = clamp(goal.d + speed.zoom, MIN_D, MAX_D); },
+    // Reset takes the shortest way home, even after several full turns, and aims at the center again.
+    reset: function () { goal.az = Math.round(goal.az / TAU) * TAU; goal.el = HOME.el; goal.d = HOME.d; goal.tx = HOME.tx; goal.aim = -1; }
+  };
+
+  // A caption on the scene names the icon button that has keyboard focus or the pointer.
+  // It stays while the pointer is anywhere over the scene, so it can be hovered, and Escape dismisses it.
+  var captBy = null;
+  function showCapt(txt, by) { capt.textContent = txt; capt.hidden = false; captBy = by; }
+  function hideCapt() {
+    var a = document.activeElement;
+    if (a && a.classList && a.classList.contains('cbtn') && a.matches(':focus-visible') && !labelsDismissed) showCapt(a.getAttribute('aria-label'), 'focus');
+    else { capt.hidden = true; captBy = null; }
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll('.cbtn'), function (b) {
+    var name = b.getAttribute('aria-label');
+    b.addEventListener('click', function (e) {
+      ACTIONS[b.getAttribute('data-act')]();
+      updateReadout();
+      log(e.detail === 0 ? lastInput : 'Click', name);
+    });
+    b.addEventListener('focus', function () { if (b.matches(':focus-visible')) { labelsDismissed = false; showCapt(name, 'focus'); } });
+    b.addEventListener('blur', function () { if (captBy === 'focus') { capt.hidden = true; captBy = null; } });
+    b.addEventListener('mouseenter', function () { labelsDismissed = false; showCapt(name, 'hover'); });
+  });
+  window.addEventListener('pointermove', function (e) {
+    if (captBy !== 'hover') return;
+    var r = stage.getBoundingClientRect();
+    if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) hideCapt();
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    var shown = !capt.hidden || !tag.hidden;
+    labelsDismissed = true;
+    capt.hidden = true; captBy = null;
+    updateTag();
+    if (shown) log('Escape', 'Hid the scene labels');
+  });
+
+  // Settings
+  document.getElementById('follow').addEventListener('change', function (e) {
+    follow = e.target.checked;
+    log('Setting', 'Turn the view to focus: ' + (follow ? 'on' : 'off'));
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('input[name="speed"]'), function (r) {
+    r.addEventListener('change', function () {
+      if (!r.checked) return;
+      speed = SPEEDS[r.value];
+      log('Setting', 'Camera speed: ' + speed.label);
+    });
+  });
+
+  // Framing follows the stage shape. A narrow stage backs the camera off so all five objects stay in
+  // view, and aims lower so the objects sit above the control buttons.
+  var TY = 1;
+  function fit() {
+    var aspect = stage.clientWidth / Math.max(1, stage.clientHeight);
+    var prev = HOME.d;
+    HOME.d = clamp(5.1 / (0.5774 * aspect), 5.6, MAX_D);
+    TY = aspect < 1.5 ? 0.4 : 1;
+    if (Math.abs(goal.d - prev) < 0.001) goal.d = HOME.d;
+    updateReadout();
+  }
+  fit();
+  view.d = goal.d;
+  if (window.ResizeObserver) new ResizeObserver(fit).observe(stage);
+  else window.addEventListener('resize', fit);
+
+  // A faint floor grid shows which way you are looking, including from below the floor.
+  function addGrid() {
+    var grid = new AFRAME.THREE.GridHelper(18, 18, 0x56658a, 0x3a465f);
+    grid.position.y = 0.01;
+    scene.object3D.add(grid);
+  }
+  if (scene.hasLoaded) addGrid(); else scene.addEventListener('loaded', addGrid);
+
+  // Drag to orbit and tilt. Movement under 4px still counts as a click on an object.
+  stage.addEventListener('pointerdown', function (e) {
+    if (e.button) return;
+    drag = { x: e.clientX, y: e.clientY, az: goal.az, el: goal.el };
+    dragged = false;
+  });
+  window.addEventListener('pointermove', function (e) {
+    if (!drag) return;
+    var dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+    if (Math.abs(dx) > 4 || Math.abs(dy) > 4) dragged = true;
+    if (dragged) {
+      goal.az = drag.az - dx * speed.drag * RAD;
+      goal.el = clamp(drag.el + dy * speed.drag * RAD, -MAX_EL, MAX_EL);
+      updateReadout();
+    }
+  });
+  window.addEventListener('pointerup', function () {
+    if (drag && dragged) log('Drag', viewText());
+    drag = null;
+  });
+  window.addEventListener('pointercancel', function () { drag = null; });
+
+  // Where a focused object is, relative to the viewer, when it is out of view.
+  var THREE = AFRAME.THREE;
+  var P = new THREE.Vector3(), C = new THREE.Vector3(), NDC = new THREE.Vector3(), V = new THREE.Vector3();
+  var off = { on: false, words: '' };
+
+  function measureOff(i) {
+    parts[i].slot.object3D.getWorldPosition(P);
+    C.copy(P).applyMatrix4(scene.camera.matrixWorldInverse);   // camera space: +x right, +y up, -z ahead
+    NDC.copy(P).project(scene.camera);
+    var bits = [];
+    if (C.z > -0.1) {
+      bits.push('behind you');
+      if (Math.abs(C.x) > Math.abs(C.z) * 0.5) bits.push(C.x > 0 ? 'to the right' : 'to the left');
+    } else {
+      if (NDC.x > 1) bits.push('to your right'); else if (NDC.x < -1) bits.push('to your left');
+      if (NDC.y > 1) bits.push('above'); else if (NDC.y < -1) bits.push('below');
+    }
+    off.on = bits.length > 0;
+    off.words = bits.join(', ');
+    return off.on;
+  }
+
+  function placeOffmark(name) {
+    var text = name + ': ' + off.words;
+    if (offtext.textContent !== text) offtext.textContent = text;
+    offmark.hidden = false;
+    var w = stage.clientWidth, h = stage.clientHeight;
+    var dx = C.x, dy = C.y;
+    var len = Math.hypot(dx, dy);
+    if (len < 0.001) { dx = 0; dy = -1; len = 1; }
+    dx /= len; dy /= len;
+    var halfW = Math.max(0, w / 2 - offmark.offsetWidth / 2 - 8);
+    var halfH = Math.max(0, h / 2 - offmark.offsetHeight / 2 - 8);
+    var s = Math.min(Math.abs(dx) > 0.001 ? halfW / Math.abs(dx) : Infinity, Math.abs(dy) > 0.001 ? halfH / Math.abs(dy) : Infinity);
+    offmark.style.left = (w / 2 + dx * s) + 'px';
+    offmark.style.top = (h / 2 - dy * s) + 'px';
+    offarrow.style.transform = 'rotate(' + (Math.atan2(-dy, dx) / RAD) + 'deg)';
+  }
+
+  function settled() {
+    return Math.abs(goal.az - view.az) < 0.01 && Math.abs(goal.el - view.el) < 0.01 &&
+           Math.abs(goal.d - view.d) < 0.02 && Math.abs(goal.tx - view.tx) < 0.02;
+  }
+
+  // Per-frame visuals: camera, focus ring, selection lift and spin, hover, labels, out-of-view marker.
+  var t0 = performance.now(), last = t0;
+
+  function frame(now) {
+    var dt = Math.min(0.1, (now - last) / 1000), t = (now - t0) / 1000;
+    last = now;
+    var calm = reduce.matches;
+    var k = Math.min(1, dt * 12);
+
+    var kv = calm ? 1 : Math.min(1, dt * speed.ease);
+    view.az += (goal.az - view.az) * kv;
+    view.el += (goal.el - view.el) * kv;
+    view.d += (goal.d - view.d) * kv;
+    view.tx += (goal.tx - view.tx) * kv;
+    // Place the camera on a sphere around the aim point (tx, TY, 0). It looks down its own -z axis,
+    // so yaw by the orbit angle and pitch down by the tilt to keep the aim point centered.
+    var ce = Math.cos(view.el);
+    cam.object3D.position.set(view.tx + Math.sin(view.az) * ce * view.d, TY + Math.sin(view.el) * view.d, Math.cos(view.az) * ce * view.d);
+    cam.object3D.rotation.order = 'YXZ';
+    cam.object3D.rotation.set(-view.el, view.az, 0);
+
+    parts.forEach(function (p, i) {
+      var sel = i === state.selected, foc = i === state.focus, hov = i === state.hover;
+      var o = p.body.object3D;
+      var ty = sel ? 0.25 : 0;
+      var ts = (hov ? 1.08 : 1) * (sel ? 1.12 : 1);
+
+      if (calm) {
+        o.position.y = ty;
+        o.scale.setScalar(ts);
+      } else {
+        o.position.y += (ty - o.position.y) * k;
+        o.scale.setScalar(o.scale.x + (ts - o.scale.x) * k);
+        if (sel) o.rotation.y += dt * 0.8;
+      }
+
+      p.ring.object3D.visible = foc;
+      if (foc) p.ring.object3D.lookAt(cam.object3D.position);
+      p.disc.object3D.visible = sel;
+      p.ring.object3D.scale.setScalar(foc && !calm ? 1 + 0.03 * Math.sin(t * 5) : 1);
+
+      var mesh = p.body.getObject3D('mesh');
+      if (mesh && mesh.material) mesh.material.emissiveIntensity = foc ? 0.4 : (hov ? 0.2 : 0);
+    });
+
+    var isOff = false;
+    if (state.focus >= 0 && scene.camera && scene.canvas) {
+      cam.object3D.updateMatrixWorld(true);
+      scene.camera.matrixWorldInverse.copy(scene.camera.matrixWorld).invert();
+      isOff = measureOff(state.focus);
+
+      if (isOff) {
+        tag.hidden = true;
+        if (labelsDismissed) offmark.hidden = true; else placeOffmark(ITEMS[state.focus].name);
+      } else {
+        offmark.hidden = true;
+        updateTag();
+        parts[state.focus].slot.object3D.getWorldPosition(V);
+        V.y += 1.25;
+        V.project(scene.camera);
+        var cw = scene.canvas.clientWidth, ch = scene.canvas.clientHeight;
+        var half = tag.offsetWidth / 2 + 6;
+        var x = Math.max(half, Math.min(cw - half, (V.x * 0.5 + 0.5) * cw));
+        var y = Math.max(tag.offsetHeight + 6, (-V.y * 0.5 + 0.5) * ch);
+        tag.style.left = x + 'px';
+        tag.style.top = y + 'px';
+      }
+    } else {
+      offmark.hidden = true;
+    }
+
+    // Focus announcement: say it once the view has settled (or after 1.5s), adding where an
+    // out-of-view object is. The button's own name is already read by the screen reader on focus.
+    if (pending && (calm || settled() || now - pending.t > 1500)) {
+      var msg = pending.msg;
+      if (state.focus >= 0 && isOff) {
+        msg += (msg ? ' ' : '') + ITEMS[state.focus].name + ' is out of view, ' + off.words + '.';
+        log('Notice', ITEMS[state.focus].name + ' out of view, ' + off.words);
+      }
+      if (msg) say(msg);
+      pending = null;
+    }
+
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+
+</body>
+</html>
