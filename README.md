@@ -28,7 +28,7 @@ Joining does not come with any formal responsibilities – if you just want to r
 
 [Join the Metaverse Standards Forum](https://metaverse-standards.org/members/)
 
-If you’re having trouble, see our [full “How to Join” instructions](https://docs.google.com/document/d/1w3WipOOT1Do7E_yiNYAA3hnJl27ZQC5ZSzMnqr7MAfw/edit#heading=h.oz4wohvkpbs4).
+If you’re interested in joining or having trouble signing up, email the chairs at [accessibility-chair@lists.metaverse-standards.org](mailto:accessibility-chair@lists.metaverse-standards.org).
 
 ## Working Group Chairs
 
