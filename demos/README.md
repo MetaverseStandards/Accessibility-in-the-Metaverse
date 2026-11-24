@@ -61,15 +61,17 @@ Testing so far, in one desktop browser:
 | Page reflow at 320 pixels wide | No horizontal scrolling |
 | Dark mode | Displays correctly in one spot check |
 | Full contrast measurement | Not done |
-| Automated accessibility check | Not done |
+| Automated accessibility check (axe 4.14.1, November 24, 2026) | No violations found. This does not show conformance |
 | Reduced motion | Not tested |
-| Zoom to 200% | Not tested |
+| Zoom to 200% | Simulated with a 640×400 window only. See known issues |
 | Screen readers | Not tested |
 | Touch screens and headsets | Not tested |
 
 Known issues:
 
 - At 320 pixels wide, the camera buttons cover much of the scene.
+- In small or zoomed-in windows, where the object buttons stack, the scene can scroll partly or fully off screen when a
+  button has focus.
 - The out-of-view notice waits for the camera to stop, which can take up to 1.5 seconds.
 
 ## Ideas for more demos

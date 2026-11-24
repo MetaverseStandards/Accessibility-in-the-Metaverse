@@ -91,6 +91,8 @@
   /* 3D stage. The canvas and everything drawn over it is hidden from assistive technology. */
   .stage { position: relative; aspect-ratio: 4 / 3; background: #263044; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; touch-action: pan-y; }
   @media (min-width: 561px) { .stage { aspect-ratio: 16 / 9; } }
+  /* Leave room for the row of object buttons, so the scene and the focused button fit on screen together. */
+  @media (min-width: 720px) { .stage { max-height: max(220px, calc(100vh - 190px)); } }
   .stage a-scene[embedded] { position: absolute; inset: 0; width: 100%; height: 100%; }
   /* A-Frame's built-in fullscreen and VR buttons would add unlabeled tab stops inside the hidden canvas. */
   .stage .a-enter-vr, .stage .a-enter-ar, .stage .a-orientation-modal { display: none !important; }
@@ -247,8 +249,8 @@
 
   <section aria-labelledby="objects-h" class="objects-cell">
     <h2 id="objects-h">Objects</h2>
-    <p class="note">The canvas is hidden from assistive technology. These native buttons are the tab stops, and each one drives its object in the scene. <kbd>Tab</kbd> leaves the set after the last object, so focus is never trapped. The arrow keys loop within it. The camera buttons on the scene come after the objects in the tab order.</p>
     <div class="objects" id="objects" role="group" aria-labelledby="objects-h"></div>
+    <p class="note">The canvas is hidden from assistive technology. These native buttons are the tab stops, and each one drives its object in the scene. <kbd>Tab</kbd> leaves the set after the last object, so focus is never trapped. The arrow keys loop within it. The camera buttons on the scene come after the objects in the tab order.</p>
   </section>
 
   <div class="overlay">
@@ -484,6 +486,7 @@
     btn.addEventListener('focus', function () {
       setFocus(i);
       log(lastInput, 'Focus on ' + it.name);
+      if (lastInput !== 'Pointer') requestAnimationFrame(function () { if (document.activeElement === btn) keepSceneInView(btn); });
       if (follow) { goal.tx = slotX(i); goal.aim = i; updateReadout(); }
       // Announce once the view has settled, so the out-of-view check uses where the camera ends up.
       pending = { msg: loopMsg, t: performance.now() };
@@ -494,7 +497,7 @@
 
     body.addEventListener('mouseenter', function () { state.hover = i; if (scene.canvas) scene.canvas.style.cursor = 'pointer'; });
     body.addEventListener('mouseleave', function () { state.hover = -1; if (scene.canvas) scene.canvas.style.cursor = ''; });
-    body.addEventListener('click', function () { if (dragged) return; btn.focus(); activate(i, 'Pointer'); });
+    body.addEventListener('click', function () { if (dragged) return; btn.focus({ preventScroll: true }); activate(i, 'Pointer'); });
   });
 
   // Arrow keys step through the objects and wrap at the ends: the "you have looped" feedback.
@@ -530,6 +533,18 @@
   var viewOut = document.getElementById('viewout');
   var capt = document.getElementById('capt');
   var stage = document.querySelector('.stage');
+
+  // Keyboard focus scrolls to the button, which can push the scene off screen. Scroll so that both show. If they do not
+  // both fit, the whole button wins, with as much of the scene above it as possible. Jumps, so no added motion.
+  // Skipped for pointers, because moving a button between press and release would lose the click.
+  function keepSceneInView(btn) {
+    var GAP = 8;
+    var top = stage.getBoundingClientRect().top - GAP;
+    var over = btn.getBoundingClientRect().bottom + GAP - document.documentElement.clientHeight;
+    if (top >= 0 && over <= 0) return;
+    window.scrollBy({ top: Math.max(top, over), behavior: 'instant' });
+  }
+
   var RAD = Math.PI / 180, TAU = Math.PI * 2;
   var MAX_EL = 85 * RAD, MIN_D = 3.2, MAX_D = 10;
   var HOME = { az: 0, el: 8 * RAD, d: 5.6, tx: 0 };
