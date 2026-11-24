@@ -75,6 +75,7 @@
   .lede { color: var(--muted); font-size: 1rem; }
   .lede + .lede { margin-top: 8px; }
   .note { color: var(--muted); font-size: 0.9rem; }
+  header .note { margin-bottom: 12px; }
 
   kbd {
     font: 500 0.78rem var(--font-mono);
@@ -213,6 +214,7 @@
 
 <main class="wrap">
   <header>
+    <p class="note"><strong>Draft for discussion.</strong> The Accessibility in the Metaverse Working Group has not approved this demo.</p>
     <h1>Keyboard Focus in 3D</h1>
     <p class="lede">Press <kbd>Tab</kbd> to move focus across the five objects, <kbd>Shift</kbd>+<kbd>Tab</kbd> to go back, and <kbd>Enter</kbd> or <kbd>Space</kbd> to select the focused one. Clicking an object works too.</p>
     <p class="lede">While an object has focus, the arrow keys step through the objects and wrap around at the ends, so you can loop through the set. To look from any angle, use the icon buttons on the scene or drag across it. <kbd>Escape</kbd> hides the labels drawn on the scene.</p>
@@ -346,6 +348,8 @@
       <li>Open question for the working group: is turning the view on focus a change of view, or a change of context? This demo treats it as a change of view and lets you turn it off.</li>
     </ul>
   </section>
+
+  <p><a href="../../">Back to the site home page</a></p>
 </main>
 
 <script>

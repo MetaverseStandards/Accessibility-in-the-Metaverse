@@ -1,7 +1,8 @@
 # Glossary prototype
 
 A small prototype to discuss how a glossary could work. Nothing here is approved: the terms, wording, field names,
-and IDs are all open. It can be deleted without affecting anything else in the repo.
+and IDs are all open. If you delete it, also remove the links to it from the site home page (`index.html` in the top
+folder).
 
 ## What it shows
 

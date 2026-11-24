@@ -90,11 +90,16 @@ Work here means preparing and sharing material about XR accessibility, chiefly:
 - **Highlighted text, bracketed notes, and "[To add]"** in the working document are open questions. Carry them
   over as flagged drafts, not finished content.
 
-## GitHub Pages site (guidelines site planned, not started)
+## GitHub Pages site ("coming soon" page only)
 
 - The guidelines will be published as a website on **GitHub Pages**, built from this repo.
-- Pages is already live from the `gh-pages` branch, but it shows only a placeholder heading from August 2024.
-  Merging to `main` doesn't change it. Ask before changing `gh-pages` or the Pages settings.
+- For now, Pages shows a "coming soon" page: `index.html` in the top folder. It links to the working document, the
+  feedback form, the group page, and the draft demos and glossary. When you add or remove a demo, update it and its
+  "last updated" date.
+- Pages publishes from the `gh-pages` branch, which holds the same files as `main`. Pushing to `main` doesn't change the
+  live site. To publish, push `main` to `gh-pages` with `git push origin main:gh-pages`. Never edit `gh-pages` directly.
+- Ask before changing `gh-pages` or the Pages settings.
+- `.nojekyll` makes Pages serve the files as they are, without building them.
 - Don't copy planning documents into this repo, commits, PRs, issues, or any public material until Dylan
   authorizes it.
 - **Don't build anything big yet.** That includes:
@@ -126,6 +131,8 @@ Follow MSF conventions wherever MSF has published them.
     Metaverse" alone. "Domain group" is only MSF's navigation and URL term.
 - **Brand:**
   - Use the MSF logo only as supplied (horizontal, unaltered, approved colors) from the official logo pack.
+  - Logo files are in `assets/msf/`: black text for light backgrounds, and white text for dark ones. Keep other text away
+    from the logo.
   - MSF has published no color palette or fonts. Don't invent "official" brand values. Ask Dylan for the logo
     pack and user guide if they're needed.
 - **Glossary:** reuse terms from the MSF Glossary

@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MSF XR Accessibility Guidelines: website coming soon</title>
+<meta name="description" content="The website for the Metaverse Standards Forum XR Accessibility Guidelines is coming soon. Read the working document, give feedback, and try our draft demos and glossary.">
+<style>
+  /* Same neutral colors as the demos and the glossary prototype. These are not official MSF brand colors. */
+  :root { --bg: #f2f5f9; --surface: #fff; --fg: #141a26; --muted: #485268; --line: #cfd6e2; --edge: #6b768c; --link: #1d4fd7; --note: #e6eaf2; color-scheme: light; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #10141c; --surface: #181e29; --fg: #e8ecf3; --muted: #a3aec2; --line: #2b3445; --edge: #7d89a0; --link: #8db4ff; --note: #232b3a; color-scheme: dark; }
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 1.0625rem/1.6 system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; overflow-wrap: break-word; }
+  .wrap { max-width: 60rem; margin-inline: auto; padding-inline: 1.25rem; }
+  header { background: var(--surface); border-bottom: 1px solid var(--line); }
+  header .wrap { padding-block: .75rem; }
+  header a { display: inline-block; }
+  header img { display: block; width: 16rem; max-width: 100%; height: auto; }
+  main { padding-block: 3rem 4rem; }
+  h1 { font-size: clamp(2rem, 1.4rem + 3vw, 3.25rem); line-height: 1.1; letter-spacing: -.02em; margin: 1rem 0; max-width: 18ch; text-wrap: balance; }
+  h2 { font-size: 1.6rem; line-height: 1.25; margin: 0 0 .5rem; }
+  h3, .cards h2 { font-size: 1.2rem; line-height: 1.3; margin: 0 0 .5rem; }
+  p { margin: 0 0 .75rem; max-width: 68ch; }
+  .status { display: inline-block; margin: 0; padding: .2rem .8rem; border: 2px solid var(--fg); border-radius: 999px; font-weight: 600; font-size: 1rem; }
+  .lede { font-size: 1.2rem; }
+  section { margin-top: 3.5rem; }
+  a { color: var(--link); text-underline-offset: .15em; }
+  a:hover { text-decoration-thickness: 2px; }
+  a:focus-visible { outline: 3px solid var(--link); outline-offset: 3px; border-radius: 2px; }
+  .cards { list-style: none; margin: 1.25rem 0 0; padding: 0; display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr)); }
+  .cards > li { background: var(--surface); border: 1px solid var(--edge); border-radius: 10px; padding: 1.25rem; }
+  .cards a { display: inline-block; padding-block: .1rem; }
+  .cards p { color: var(--muted); }
+  .cards p:last-child { margin-bottom: 0; }
+  .cards strong { color: var(--fg); }
+  .note { background: var(--note); border-left: 4px solid var(--link); border-radius: 6px; padding: .75rem 1rem; max-width: none; }
+  .plain { padding-left: 1.3rem; margin: 0; max-width: 68ch; }
+  .plain li { padding-block: .2rem; }
+  footer { border-top: 1px solid var(--line); background: var(--surface); }
+  footer .wrap { padding-block: 1.5rem; }
+  footer p { color: var(--muted); font-size: 1rem; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a href="https://metaverse-standards.org/"><picture>
+      <source srcset="assets/msf/msf-logo-white-text.webp" media="(prefers-color-scheme: dark)" width="1024" height="284">
+      <img src="assets/msf/msf-logo-black-text.png" alt="Metaverse Standards Forum" width="1800" height="500">
+    </picture></a>
+  </div>
+</header>
+
+<main class="wrap">
+  <p class="status">Coming soon: work in progress</p>
+  <h1>MSF XR Accessibility Guidelines</h1>
+  <p class="lede">The Accessibility in the Metaverse Working Group is building a website for the Metaverse Standards Forum (MSF) XR Accessibility Guidelines: testable accessibility criteria and real-world examples for virtual, augmented, and mixed reality. Together, these are called extended reality (XR).</p>
+  <p>The guidelines are not on this site yet. Version 1.0 was released for public review in July 2026, and we are now working on version 2.0. Until the site is ready, please read the working document.</p>
+
+  <ul class="cards" role="list">
+    <li>
+      <h2><a href="https://docs.google.com/document/d/1wRHflVnJhRqZh6IvVAbWZGm0qXrkcJ2RxdRNaQjsMdY/edit?usp=sharing">Working document</a></h2>
+      <p>Read the current draft of the guidelines and comment on it. Opens in Google Docs.</p>
+    </li>
+    <li>
+      <h2><a href="https://docs.google.com/forms/d/e/1FAIpQLScDzfwDg7QkALQpBUcLN0_e98N1JuW69kF8vFD1XDPMyIB57w/viewform">Feedback form</a></h2>
+      <p>Tell us what works, what is missing, and what to change. The form was written for version 1.0, and we still want to hear from you. Opens in Google Forms.</p>
+    </li>
+    <li>
+      <h2><a href="https://metaverse-standards.org/domain-groups/accessibility-in-the-metaverse/">Working group page</a></h2>
+      <p>Learn about the working group, its meetings, and how to join.</p>
+    </li>
+  </ul>
+
+  <section aria-labelledby="try">
+    <h2 id="try">Try our drafts</h2>
+    <p class="note"><strong>For discussion only.</strong> The working group has not approved these drafts. They may change or be removed. They are not part of the guidelines, and they are not evidence that any product conforms.</p>
+    <ul class="cards" role="list">
+      <li>
+        <h3 id="demos">Demos</h3>
+        <p>Small interactive pages that show accessibility criteria in action.</p>
+        <p><a href="demos/keyboard-focus-3d/">Keyboard Focus in 3D</a><br>Move keyboard focus between objects in a 3D scene. <strong>Not yet tested</strong> with screen readers, touch screens, or headsets.</p>
+        <p><a href="https://github.com/MetaverseStandards/Accessibility-in-the-Metaverse/blob/main/demos/README.md">Ideas and test results for demos, on GitHub</a></p>
+      </li>
+      <li>
+        <h3 id="glossary">Glossary</h3>
+        <p>A prototype that shows how shared definitions could work.</p>
+        <p><a href="prototypes/glossary/">Glossary prototype</a><br>18 draft terms, each with its own link, and how each one relates to definitions from other standards. <strong>Not yet tested</strong> with screen readers.</p>
+        <p><a href="https://github.com/MetaverseStandards/Accessibility-in-the-Metaverse/blob/main/prototypes/glossary/README.md">About the glossary prototype, on GitHub</a></p>
+      </li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="next">
+    <h2 id="next">What we are planning</h2>
+    <p>These plans for version 2.0 come from the working document and may change:</p>
+    <ul class="plain">
+      <li>a new platform where you can filter by tags, with links between criteria and examples;</li>
+      <li>refined criteria, and more examples;</li>
+      <li>further suggestions and tools for auditing XR applications and meeting the criteria.</li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="help">
+    <h2 id="help">Other ways to take part</h2>
+    <ul class="plain">
+      <li>Email the chairs at <a href="mailto:accessibility-chair@lists.metaverse-standards.org">accessibility-chair@lists.metaverse-standards.org</a>. Please tell us if you find an accessibility barrier on this site.</li>
+      <li>See the source files in our <a href="https://github.com/MetaverseStandards/Accessibility-in-the-Metaverse">GitHub repository</a>. Pull requests from people who are not MSF members are reviewed by the Forum membership before they are accepted.</li>
+    </ul>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>We use AI tools to help build this site and the demos.</p>
+    <p>Page last updated <time datetime="2026-11-24">November 24, 2026</time>.</p>
+  </div>
+</footer>
+
+</body>
+</html>
