@@ -130,11 +130,16 @@ Follow MSF conventions wherever MSF has published them.
   - In body text, call us the "Accessibility in the Metaverse Working Group". Titles can use "Accessibility in the
     Metaverse" alone. "Domain group" is only MSF's navigation and URL term.
 - **Brand:**
-  - Use the MSF logo only as supplied (horizontal, unaltered, approved colors) from the official logo pack.
-  - Logo files are in `assets/msf/`: black text for light backgrounds, and white text for dark ones. Keep other text away
-    from the logo.
-  - MSF has published no color palette or fonts. Don't invent "official" brand values. Ask Dylan for the logo
-    pack and user guide if they're needed.
+  - Use the MSF logo only as supplied in the official logo pack: whole, upright, with its TM symbol, and with no
+    recoloring or effects. Don't use the symbol alone, such as for a browser icon, unless MSF gives written consent.
+  - `assets/msf/` holds the pack's horizontal SVGs. Use `MSF_RGB_June22.svg` on backgrounds over 85% brightness and
+    `MSF_inverted_June22.svg` on backgrounds under 50%. Don't use the logo in between, or on busy backgrounds.
+  - On the web, the horizontal logo must be at least 50px high, and the vertical one at least 100px.
+  - Keep other text away from the logo.
+  - The guide (June 2022) gives these official logo colors, and allows them as accents: `#6CA800`, `#93C501`, `#BFCB02`,
+    `#D0D402`, `#00A38A`, `#0098CA`, `#00B2DA`. On white, all are below 4.5:1, so don't use them for text there. Only
+    `#00A38A` and `#0098CA` reach 3:1 on white.
+  - MSF has published no text fonts. The logo's fonts are for the logo. Don't invent other "official" brand values.
 - **Glossary:** reuse terms from the MSF Glossary
   ([site](https://glossary.metaverse-standards.org/),
   repo `MetaverseStandards/metaversestandards-glossary`) before defining new ones.
