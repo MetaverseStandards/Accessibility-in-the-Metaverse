@@ -1,0 +1,164 @@
+{
+  "note": "PROTOTYPE. Field names, IDs, relationships and wording are for discussion only. Nothing here is approved by the working group.",
+  "sources": {
+    "wcag22": { "name": "WCAG 2.2", "base": "https://www.w3.org/TR/WCAG22/#" },
+    "wcag3": { "name": "WCAG 3.0 Working Draft", "base": "https://www.w3.org/TR/wcag-3.0/#" },
+    "wcag2ict": { "name": "WCAG2ICT", "base": "https://www.w3.org/TR/wcag2ict-22/#" },
+    "msf": { "name": "MSF Glossary", "base": "https://glossary.metaverse-standards.org/concepts/" }
+  },
+  "terms": [
+    {
+      "id": "application",
+      "term": "application",
+      "relationship": "ours",
+      "definition": "The software, including its content and interface, that a person uses to take part in an extended reality experience.",
+      "notes": ["Our criteria are written about the application. WCAG's user agent is defined around web content, and MSF's browser is defined around X3D files, so neither is the same thing."],
+      "related": [
+        { "source": "wcag22", "ref": "dfn-user-agents", "label": "user agent" },
+        { "source": "msf", "ref": "26/", "label": "browser" }
+      ]
+    },
+    {
+      "id": "assistive-technology",
+      "term": "assistive technology",
+      "aliases": ["assistive technologies", "AT"],
+      "relationship": "adopted-note",
+      "definitionFrom": { "source": "wcag22", "ref": "dfn-assistive-technologies", "label": "assistive technology" },
+      "notes": ["WCAG's definition relies on user agents. Open question: how should it apply when assistive technology is part of a headset's operating system, or built into an application?"],
+      "related": [{ "source": "wcag2ict", "ref": "applying-user-agent-to-non-web-documents-and-software", "label": "applying \"user agent\" to non-web software" }]
+    },
+    {
+      "id": "audio-description",
+      "term": "audio description",
+      "aliases": ["audio descriptions"],
+      "relationship": "adopted-note",
+      "definitionFrom": { "source": "wcag22", "ref": "dfn-audio-descriptions", "label": "audio description" },
+      "notes": ["WCAG's definition is about a soundtrack. An XR application may not have a fixed soundtrack, so a description may be triggered by what a person does or what is near them."]
+    },
+    {
+      "id": "avatar",
+      "term": "avatar",
+      "aliases": ["avatars"],
+      "relationship": "differs",
+      "definition": "A representation of a person in a virtual or mixed environment, through which others can perceive them and through which they may act.",
+      "notes": ["MSF's definition covers the same idea but is limited to X3D worlds. WCAG 2.2 does not define this term."],
+      "related": [{ "source": "msf", "ref": "23/", "label": "avatar" }]
+    },
+    {
+      "id": "captions",
+      "term": "captions",
+      "aliases": ["caption"],
+      "relationship": "adopted",
+      "definitionFrom": { "source": "wcag22", "ref": "dfn-captions", "label": "captions" },
+      "related": [{ "source": "wcag3", "ref": "dfn-captions", "label": "captions" }]
+    },
+    {
+      "id": "contrast-ratio",
+      "term": "contrast ratio",
+      "relationship": "adopted-note",
+      "definitionFrom": { "source": "wcag22", "ref": "dfn-contrast-ratio", "label": "contrast ratio" },
+      "notes": ["Open question: what should be measured when lighting, transparency or a real-world background changes the colors a person sees?"]
+    },
+    {
+      "id": "css-pixel",
+      "term": "CSS pixel",
+      "aliases": ["CSS pixels"],
+      "relationship": "adopted-note",
+      "definitionFrom": { "source": "wcag22", "ref": "dfn-css-pixels", "label": "CSS pixel" },
+      "notes": ["A CSS pixel is a visual angle of about 0.0213 degrees, so 48 CSS pixels is about 1 degree. It is not the same as a pixel of the headset's display or a pixel of an image, so do not write \"pixel\" without saying which."],
+      "related": [{ "source": "msf", "ref": "71/", "label": "pixel (element of an image)" }]
+    },
+    {
+      "id": "degree-of-visual-angle",
+      "term": "degree of visual angle",
+      "aliases": ["degree", "degrees"],
+      "formerIds": ["degrees"],
+      "relationship": "ours",
+      "definition": "A unit for how large something appears to a viewer, based on both its size and its distance.",
+      "notes": ["For something viewed straight on: angle = 2 × arctan(size ÷ (2 × distance)).", "This is the apparent size of one thing. It is not a headset's field of view, which is also given in degrees."],
+      "related": [{ "source": "wcag22", "ref": "dfn-css-pixels", "label": "CSS pixel" }]
+    },
+    {
+      "id": "dragging-movement",
+      "term": "dragging movement",
+      "aliases": ["dragging movements"],
+      "relationship": "adopted-note",
+      "definitionFrom": { "source": "wcag22", "ref": "dfn-dragging-movements", "label": "dragging movement" },
+      "notes": ["Open question: should moving an object held by a hand, controller or gaze count as dragging?"]
+    },
+    {
+      "id": "head-mounted-display",
+      "term": "head-mounted display",
+      "aliases": ["HMD", "headset"],
+      "relationship": "adopted",
+      "definitionFrom": { "source": "msf", "ref": "110/", "label": "head-mounted display" }
+    },
+    {
+      "id": "immersive",
+      "term": "immersive",
+      "relationship": "adopted",
+      "definitionFrom": { "source": "msf", "ref": "54/", "label": "immersive" },
+      "quote": "creating the illusion of being inside a computer-generated scene"
+    },
+    {
+      "id": "interactive-element",
+      "term": "interactive element",
+      "aliases": ["interactive elements", "user interface component"],
+      "relationship": "differs",
+      "definition": "A part of an application that responds to a person's input, such as a menu button, a slider or an object that can be picked up.",
+      "notes": ["WCAG 2.2 calls the nearest idea a user interface component. The WCAG 3.0 draft defines interactive element, and also requires a name that software can determine."],
+      "related": [
+        { "source": "wcag22", "ref": "dfn-user-interface-components", "label": "user interface component" },
+        { "source": "wcag3", "ref": "dfn-interactive-element", "label": "interactive element" }
+      ]
+    },
+    {
+      "id": "live",
+      "term": "live",
+      "relationship": "adopted-note",
+      "definitionFrom": { "source": "wcag22", "ref": "dfn-live", "label": "live" },
+      "notes": ["WCAG's definition is about real-world events. Open question: do speech between avatars and events that happen only in a virtual world count as live?"]
+    },
+    {
+      "id": "pointer-input",
+      "term": "pointer input",
+      "aliases": ["pointer"],
+      "relationship": "adopted-note",
+      "definitionFrom": { "source": "wcag22", "ref": "dfn-pointer-inputs", "label": "pointer input" },
+      "notes": ["WCAG's definition is about coordinates on a screen. In XR, pointer input may also come from a ray, hand, controller or gaze aimed into three-dimensional space.", "Conflict: in the MSF Glossary, pointer means a location and direction in the virtual world, not the input itself. These guidelines do not use it that way."],
+      "related": [{ "source": "msf", "ref": "72/", "label": "pointer" }]
+    },
+    {
+      "id": "programmatically-determined",
+      "term": "programmatically determined",
+      "aliases": ["programmatically determinable"],
+      "relationship": "adopted-note",
+      "definitionFrom": { "source": "wcag22", "ref": "dfn-programmatically-determinable", "label": "programmatically determined" },
+      "notes": ["Open question: which platform accessibility services count for XR, and what applies where a platform does not have one?"]
+    },
+    {
+      "id": "single-pointer",
+      "term": "single pointer",
+      "relationship": "adopted-note",
+      "definitionFrom": { "source": "wcag22", "ref": "dfn-single-pointer", "label": "single pointer" },
+      "notes": ["WCAG's definition is about one point on a page or screen. In XR, this may be one hand, controller, ray or gaze used on its own."]
+    },
+    {
+      "id": "target",
+      "term": "target",
+      "aliases": ["targets", "hit target"],
+      "relationship": "adopted-note",
+      "definitionFrom": { "source": "wcag22", "ref": "dfn-targets", "label": "target" },
+      "notes": ["WCAG's definition is about a region of the display. In XR, a target may be a three-dimensional volume whose apparent size changes with distance."]
+    },
+    {
+      "id": "virtual-world",
+      "term": "virtual world",
+      "aliases": ["world"],
+      "relationship": "differs",
+      "definition": "A computer-generated environment that a person can perceive and interact with in an application.",
+      "notes": ["MSF's definition covers the same idea but is limited to X3D files shown by an X3D browser. WCAG 2.2 does not define this term."],
+      "related": [{ "source": "msf", "ref": "102/", "label": "world" }]
+    }
+  ]
+}

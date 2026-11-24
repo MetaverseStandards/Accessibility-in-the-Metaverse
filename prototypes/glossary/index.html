@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Glossary prototype</title>
+<!-- Generated pages: edit terms.json, sample-criteria.json or template.html, then run build.py. -->
+<style>
+  :root { --bg: #f2f5f9; --surface: #fff; --fg: #141a26; --muted: #485268; --line: #cfd6e2; --link: #1d4fd7; --note: #e6eaf2; color-scheme: light; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #10141c; --surface: #181e29; --fg: #e8ecf3; --muted: #a3aec2; --line: #2b3445; --link: #8db4ff; --note: #232b3a; color-scheme: dark; }
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 1rem/1.6 system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
+  .wrap { max-width: 46rem; margin-inline: auto; padding: 1.5rem 1rem 4rem; overflow-wrap: break-word; }
+  .banner { border: 2px solid var(--link); border-radius: 8px; padding: .75rem 1rem; background: var(--surface); margin: 0; }
+  h1 { font-size: 1.9rem; line-height: 1.2; margin: 1.5rem 0 .5rem; }
+  h2 { font-size: 1.3rem; line-height: 1.3; margin: 2rem 0 .5rem; }
+  h3 { font-size: 1.15rem; line-height: 1.3; margin: 0 0 .25rem; }
+  article h2 { margin-top: 0; }
+  p { margin: .5rem 0; }
+  a { color: var(--link); text-underline-offset: .15em; }
+  a.term { text-decoration-style: dotted; text-decoration-thickness: 2px; }
+  a:focus-visible, article:focus-visible { outline: 3px solid var(--link); outline-offset: 3px; border-radius: 2px; }
+  article { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 1rem; margin: 1rem 0; scroll-margin-top: 1rem; }
+  article > span[id] { scroll-margin-top: 2rem; }
+  article:target, article:has(> span:target) { border: 3px solid var(--link); }
+  .meta { color: var(--muted); margin: .1rem 0; }
+  .note { background: var(--note); border-radius: 6px; padding: .6rem .8rem; }
+  .index { columns: 14rem; padding-left: 1.2rem; }
+  .index li { padding-block: .15rem; }
+  .key { margin: 0; }
+  .key div { margin: .35rem 0; }
+  .key dt { font-weight: 600; display: inline; }
+  .key dt::after { content: ": "; }
+  .key dd { display: inline; margin: 0; }
+  .skip { position: absolute; left: -999rem; }
+  .skip:focus { position: static; }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+<div class="wrap">
+<header><p class="banner"><strong>Prototype for discussion.</strong> Terms, wording, links and structure have not been approved by the Accessibility in the Metaverse Working Group.</p></header>
+<main id="main" tabindex="-1">
+<h1>Glossary prototype</h1>
+<p>Each term has its own permanent link, and points to the WCAG or MSF definition it uses or differs from. See the terms in use on the <a href="sample-criteria.html">sample criteria page</a>.</p>
+<h2>How each term relates to its sources</h2>
+<dl class="key">
+<div><dt>Adopted</dt><dd>Uses the source's definition as it is.</dd></div>
+<div><dt>Adopted with an XR note</dt><dd>Uses the source's definition, plus a note on how it applies in XR.</dd></div>
+<div><dt>Differs</dt><dd>Our own draft definition, because the sources' do not fit.</dd></div>
+<div><dt>Ours</dt><dd>Our own draft definition, with no equivalent in the sources.</dd></div>
+</dl>
+<nav aria-labelledby="all-terms">
+<h2 id="all-terms">All terms</h2>
+<ul class="index">
+<li><a href="#application">application</a></li>
+<li><a href="#assistive-technology">assistive technology</a></li>
+<li><a href="#audio-description">audio description</a></li>
+<li><a href="#avatar">avatar</a></li>
+<li><a href="#captions">captions</a></li>
+<li><a href="#contrast-ratio">contrast ratio</a></li>
+<li><a href="#css-pixel">CSS pixel</a></li>
+<li><a href="#degree-of-visual-angle">degree of visual angle</a></li>
+<li><a href="#dragging-movement">dragging movement</a></li>
+<li><a href="#head-mounted-display">head-mounted display</a></li>
+<li><a href="#immersive">immersive</a></li>
+<li><a href="#interactive-element">interactive element</a></li>
+<li><a href="#live">live</a></li>
+<li><a href="#pointer-input">pointer input</a></li>
+<li><a href="#programmatically-determined">programmatically determined</a></li>
+<li><a href="#single-pointer">single pointer</a></li>
+<li><a href="#target">target</a></li>
+<li><a href="#virtual-world">virtual world</a></li>
+</ul>
+</nav>
+<h2>Definitions</h2>
+<article id="application" tabindex="-1" aria-labelledby="h-application">
+<h3 id="h-application">application</h3>
+<p class="meta">Relationship: <strong>Ours</strong></p>
+<p><strong>Draft definition:</strong> The software, including its content and interface, that a person uses to take part in an extended reality experience.</p>
+<p class="note"><strong>Draft note:</strong> Our criteria are written about the application. WCAG&#x27;s user agent is defined around web content, and MSF&#x27;s browser is defined around X3D files, so neither is the same thing.</p>
+<p>Related: <a href="https://www.w3.org/TR/WCAG22/#dfn-user-agents">WCAG 2.2: user agent</a>; <a href="https://glossary.metaverse-standards.org/concepts/26/">MSF Glossary: browser</a></p>
+<p>Used in: <a href="sample-criteria.html#avatar-inclusive-representation">Inclusive Representation</a>, <a href="sample-criteria.html#captions-live">Captions: live content</a>, <a href="sample-criteria.html#captions-size">Caption formatting: size</a>, <a href="sample-criteria.html#captions-contrast">Caption formatting: contrast</a>, <a href="sample-criteria.html#audio-descriptions-triggered">Audio Descriptions: triggered</a>, <a href="sample-criteria.html#assistive-technology-compatibility">Assistive Technology Compatibility</a>, <a href="sample-criteria.html#target-size">Target Size</a></p>
+<p><a href="#application">Link to “application”</a></p>
+</article>
+<article id="assistive-technology" tabindex="-1" aria-labelledby="h-assistive-technology">
+<h3 id="h-assistive-technology">assistive technology</h3>
+<p class="meta">Also: assistive technologies, AT</p>
+<p class="meta">Relationship: <strong>Adopted with an XR note</strong></p>
+<p><strong>Definition:</strong> <a href="https://www.w3.org/TR/WCAG22/#dfn-assistive-technologies">WCAG 2.2: assistive technology</a></p>
+<p class="note"><strong>Draft note:</strong> WCAG&#x27;s definition relies on user agents. Open question: how should it apply when assistive technology is part of a headset&#x27;s operating system, or built into an application?</p>
+<p>Related: <a href="https://www.w3.org/TR/wcag2ict-22/#applying-user-agent-to-non-web-documents-and-software">WCAG2ICT: applying &quot;user agent&quot; to non-web software</a></p>
+<p>Used in: <a href="sample-criteria.html#assistive-technology-compatibility">Assistive Technology Compatibility</a></p>
+<p><a href="#assistive-technology">Link to “assistive technology”</a></p>
+</article>
+<article id="audio-description" tabindex="-1" aria-labelledby="h-audio-description">
+<h3 id="h-audio-description">audio description</h3>
+<p class="meta">Also: audio descriptions</p>
+<p class="meta">Relationship: <strong>Adopted with an XR note</strong></p>
+<p><strong>Definition:</strong> <a href="https://www.w3.org/TR/WCAG22/#dfn-audio-descriptions">WCAG 2.2: audio description</a></p>
+<p class="note"><strong>Draft note:</strong> WCAG&#x27;s definition is about a soundtrack. An XR application may not have a fixed soundtrack, so a description may be triggered by what a person does or what is near them.</p>
+<p>Used in: <a href="sample-criteria.html#audio-descriptions-triggered">Audio Descriptions: triggered</a></p>
+<p><a href="#audio-description">Link to “audio description”</a></p>
+</article>
+<article id="avatar" tabindex="-1" aria-labelledby="h-avatar">
+<h3 id="h-avatar">avatar</h3>
+<p class="meta">Also: avatars</p>
+<p class="meta">Relationship: <strong>Differs</strong></p>
+<p><strong>Draft definition:</strong> A representation of a person in a virtual or mixed environment, through which others can perceive them and through which they may act.</p>
+<p class="note"><strong>Draft note:</strong> MSF&#x27;s definition covers the same idea but is limited to X3D worlds. WCAG 2.2 does not define this term.</p>
+<p>Related: <a href="https://glossary.metaverse-standards.org/concepts/23/">MSF Glossary: avatar</a></p>
+<p>Used in: <a href="sample-criteria.html#avatar-inclusive-representation">Inclusive Representation</a></p>
+<p><a href="#avatar">Link to “avatar”</a></p>
+</article>
+<article id="captions" tabindex="-1" aria-labelledby="h-captions">
+<h3 id="h-captions">captions</h3>
+<p class="meta">Also: caption</p>
+<p class="meta">Relationship: <strong>Adopted</strong></p>
+<p><strong>Definition:</strong> <a href="https://www.w3.org/TR/WCAG22/#dfn-captions">WCAG 2.2: captions</a></p>
+<p>Related: <a href="https://www.w3.org/TR/wcag-3.0/#dfn-captions">WCAG 3.0 Working Draft: captions</a></p>
+<p>Used in: <a href="sample-criteria.html#captions-live">Captions: live content</a>, <a href="sample-criteria.html#captions-size">Caption formatting: size</a>, <a href="sample-criteria.html#captions-contrast">Caption formatting: contrast</a></p>
+<p><a href="#captions">Link to “captions”</a></p>
+</article>
+<article id="contrast-ratio" tabindex="-1" aria-labelledby="h-contrast-ratio">
+<h3 id="h-contrast-ratio">contrast ratio</h3>
+<p class="meta">Relationship: <strong>Adopted with an XR note</strong></p>
+<p><strong>Definition:</strong> <a href="https://www.w3.org/TR/WCAG22/#dfn-contrast-ratio">WCAG 2.2: contrast ratio</a></p>
+<p class="note"><strong>Draft note:</strong> Open question: what should be measured when lighting, transparency or a real-world background changes the colors a person sees?</p>
+<p>Used in: <a href="sample-criteria.html#captions-contrast">Caption formatting: contrast</a></p>
+<p><a href="#contrast-ratio">Link to “contrast ratio”</a></p>
+</article>
+<article id="css-pixel" tabindex="-1" aria-labelledby="h-css-pixel">
+<h3 id="h-css-pixel">CSS pixel</h3>
+<p class="meta">Also: CSS pixels</p>
+<p class="meta">Relationship: <strong>Adopted with an XR note</strong></p>
+<p><strong>Definition:</strong> <a href="https://www.w3.org/TR/WCAG22/#dfn-css-pixels">WCAG 2.2: CSS pixel</a></p>
+<p class="note"><strong>Draft note:</strong> A CSS pixel is a visual angle of about 0.0213 degrees, so 48 CSS pixels is about 1 degree. It is not the same as a pixel of the headset&#x27;s display or a pixel of an image, so do not write &quot;pixel&quot; without saying which.</p>
+<p>Related: <a href="https://glossary.metaverse-standards.org/concepts/71/">MSF Glossary: pixel (element of an image)</a></p>
+<p><a href="#css-pixel">Link to “CSS pixel”</a></p>
+</article>
+<article id="degree-of-visual-angle" tabindex="-1" aria-labelledby="h-degree-of-visual-angle"><span id="degrees"></span>
+<h3 id="h-degree-of-visual-angle">degree of visual angle</h3>
+<p class="meta">Also: degree, degrees</p>
+<p class="meta">Relationship: <strong>Ours</strong></p>
+<p><strong>Draft definition:</strong> A unit for how large something appears to a viewer, based on both its size and its distance.</p>
+<p class="note"><strong>Draft note:</strong> For something viewed straight on: angle = 2 × arctan(size ÷ (2 × distance)).</p>
+<p class="note"><strong>Draft note:</strong> This is the apparent size of one thing. It is not a headset&#x27;s field of view, which is also given in degrees.</p>
+<p>Related: <a href="https://www.w3.org/TR/WCAG22/#dfn-css-pixels">WCAG 2.2: CSS pixel</a></p>
+<p>Used in: <a href="sample-criteria.html#captions-size">Caption formatting: size</a></p>
+<p><a href="#degree-of-visual-angle">Link to “degree of visual angle”</a></p>
+</article>
+<article id="dragging-movement" tabindex="-1" aria-labelledby="h-dragging-movement">
+<h3 id="h-dragging-movement">dragging movement</h3>
+<p class="meta">Also: dragging movements</p>
+<p class="meta">Relationship: <strong>Adopted with an XR note</strong></p>
+<p><strong>Definition:</strong> <a href="https://www.w3.org/TR/WCAG22/#dfn-dragging-movements">WCAG 2.2: dragging movement</a></p>
+<p class="note"><strong>Draft note:</strong> Open question: should moving an object held by a hand, controller or gaze count as dragging?</p>
+<p><a href="#dragging-movement">Link to “dragging movement”</a></p>
+</article>
+<article id="head-mounted-display" tabindex="-1" aria-labelledby="h-head-mounted-display">
+<h3 id="h-head-mounted-display">head-mounted display</h3>
+<p class="meta">Also: HMD, headset</p>
+<p class="meta">Relationship: <strong>Adopted</strong></p>
+<p><strong>Definition:</strong> <a href="https://glossary.metaverse-standards.org/concepts/110/">MSF Glossary: head-mounted display</a></p>
+<p>Used in: <a href="sample-criteria.html#captions-size">Caption formatting: size</a></p>
+<p><a href="#head-mounted-display">Link to “head-mounted display”</a></p>
+</article>
+<article id="immersive" tabindex="-1" aria-labelledby="h-immersive">
+<h3 id="h-immersive">immersive</h3>
+<p class="meta">Relationship: <strong>Adopted</strong></p>
+<p><strong>Definition:</strong> <q>creating the illusion of being inside a computer-generated scene</q> (<a href="https://glossary.metaverse-standards.org/concepts/54/">MSF Glossary: immersive</a>)</p>
+<p><a href="#immersive">Link to “immersive”</a></p>
+</article>
+<article id="interactive-element" tabindex="-1" aria-labelledby="h-interactive-element">
+<h3 id="h-interactive-element">interactive element</h3>
+<p class="meta">Also: interactive elements, user interface component</p>
+<p class="meta">Relationship: <strong>Differs</strong></p>
+<p><strong>Draft definition:</strong> A part of an application that responds to a person&#x27;s input, such as a menu button, a slider or an object that can be picked up.</p>
+<p class="note"><strong>Draft note:</strong> WCAG 2.2 calls the nearest idea a user interface component. The WCAG 3.0 draft defines interactive element, and also requires a name that software can determine.</p>
+<p>Related: <a href="https://www.w3.org/TR/WCAG22/#dfn-user-interface-components">WCAG 2.2: user interface component</a>; <a href="https://www.w3.org/TR/wcag-3.0/#dfn-interactive-element">WCAG 3.0 Working Draft: interactive element</a></p>
+<p><a href="#interactive-element">Link to “interactive element”</a></p>
+</article>
+<article id="live" tabindex="-1" aria-labelledby="h-live">
+<h3 id="h-live">live</h3>
+<p class="meta">Relationship: <strong>Adopted with an XR note</strong></p>
+<p><strong>Definition:</strong> <a href="https://www.w3.org/TR/WCAG22/#dfn-live">WCAG 2.2: live</a></p>
+<p class="note"><strong>Draft note:</strong> WCAG&#x27;s definition is about real-world events. Open question: do speech between avatars and events that happen only in a virtual world count as live?</p>
+<p>Used in: <a href="sample-criteria.html#captions-live">Captions: live content</a></p>
+<p><a href="#live">Link to “live”</a></p>
+</article>
+<article id="pointer-input" tabindex="-1" aria-labelledby="h-pointer-input">
+<h3 id="h-pointer-input">pointer input</h3>
+<p class="meta">Also: pointer</p>
+<p class="meta">Relationship: <strong>Adopted with an XR note</strong></p>
+<p><strong>Definition:</strong> <a href="https://www.w3.org/TR/WCAG22/#dfn-pointer-inputs">WCAG 2.2: pointer input</a></p>
+<p class="note"><strong>Draft note:</strong> WCAG&#x27;s definition is about coordinates on a screen. In XR, pointer input may also come from a ray, hand, controller or gaze aimed into three-dimensional space.</p>
+<p class="note"><strong>Draft note:</strong> Conflict: in the MSF Glossary, pointer means a location and direction in the virtual world, not the input itself. These guidelines do not use it that way.</p>
+<p>Related: <a href="https://glossary.metaverse-standards.org/concepts/72/">MSF Glossary: pointer</a></p>
+<p><a href="#pointer-input">Link to “pointer input”</a></p>
+</article>
+<article id="programmatically-determined" tabindex="-1" aria-labelledby="h-programmatically-determined">
+<h3 id="h-programmatically-determined">programmatically determined</h3>
+<p class="meta">Also: programmatically determinable</p>
+<p class="meta">Relationship: <strong>Adopted with an XR note</strong></p>
+<p><strong>Definition:</strong> <a href="https://www.w3.org/TR/WCAG22/#dfn-programmatically-determinable">WCAG 2.2: programmatically determined</a></p>
+<p class="note"><strong>Draft note:</strong> Open question: which platform accessibility services count for XR, and what applies where a platform does not have one?</p>
+<p>Used in: <a href="sample-criteria.html#points-of-interest-role">Points of Interest: role</a></p>
+<p><a href="#programmatically-determined">Link to “programmatically determined”</a></p>
+</article>
+<article id="single-pointer" tabindex="-1" aria-labelledby="h-single-pointer">
+<h3 id="h-single-pointer">single pointer</h3>
+<p class="meta">Relationship: <strong>Adopted with an XR note</strong></p>
+<p><strong>Definition:</strong> <a href="https://www.w3.org/TR/WCAG22/#dfn-single-pointer">WCAG 2.2: single pointer</a></p>
+<p class="note"><strong>Draft note:</strong> WCAG&#x27;s definition is about one point on a page or screen. In XR, this may be one hand, controller, ray or gaze used on its own.</p>
+<p><a href="#single-pointer">Link to “single pointer”</a></p>
+</article>
+<article id="target" tabindex="-1" aria-labelledby="h-target">
+<h3 id="h-target">target</h3>
+<p class="meta">Also: targets, hit target</p>
+<p class="meta">Relationship: <strong>Adopted with an XR note</strong></p>
+<p><strong>Definition:</strong> <a href="https://www.w3.org/TR/WCAG22/#dfn-targets">WCAG 2.2: target</a></p>
+<p class="note"><strong>Draft note:</strong> WCAG&#x27;s definition is about a region of the display. In XR, a target may be a three-dimensional volume whose apparent size changes with distance.</p>
+<p>Used in: <a href="sample-criteria.html#target-size">Target Size</a></p>
+<p><a href="#target">Link to “target”</a></p>
+</article>
+<article id="virtual-world" tabindex="-1" aria-labelledby="h-virtual-world">
+<h3 id="h-virtual-world">virtual world</h3>
+<p class="meta">Also: world</p>
+<p class="meta">Relationship: <strong>Differs</strong></p>
+<p><strong>Draft definition:</strong> A computer-generated environment that a person can perceive and interact with in an application.</p>
+<p class="note"><strong>Draft note:</strong> MSF&#x27;s definition covers the same idea but is limited to X3D files shown by an X3D browser. WCAG 2.2 does not define this term.</p>
+<p>Related: <a href="https://glossary.metaverse-standards.org/concepts/102/">MSF Glossary: world</a></p>
+<p><a href="#virtual-world">Link to “virtual world”</a></p>
+</article>
+</main>
+</div>
+</body>
+</html>
