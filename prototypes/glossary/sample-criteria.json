@@ -1,0 +1,46 @@
+{
+  "note": "Criteria wording copied from the public working document (11-20-2026) to show linking. Only the links were added. Some entries show one sentence of a longer criterion. A link is written [words](glossary:term-id).",
+  "criteria": [
+    {
+      "id": "avatar-inclusive-representation",
+      "title": "Inclusive Representation",
+      "text": "The [application](glossary:application) provides user options for a customizable [avatar](glossary:avatar). A wide variety of identities is offered. This includes options for avatar height, body shape, skin color, hair, prosthetic limbs, assistive devices such as hearing aids, and so on."
+    },
+    {
+      "id": "captions-live",
+      "title": "Captions: live content",
+      "text": "The [application](glossary:application) provides [captions](glossary:captions) for [live](glossary:live) content, including user-generated speech in a multi-person application."
+    },
+    {
+      "id": "captions-size",
+      "title": "Caption formatting: size",
+      "text": "The [application](glossary:application) provides text with a minimum cap height of 0.7 [degrees](glossary:degree-of-visual-angle). This is a common baseline for readable [captions](glossary:captions) in XR, but the ideal size depends on distance, field of view, and the [headset](glossary:head-mounted-display)."
+    },
+    {
+      "id": "captions-contrast",
+      "title": "Caption formatting: contrast",
+      "text": "The [application](glossary:application) provides [captions](glossary:captions) with a minimum [contrast ratio](glossary:contrast-ratio) of 4.5:1 in typical viewing conditions. A solid color background is recommended to ensure consistent contrast across different environments."
+    },
+    {
+      "id": "audio-descriptions-triggered",
+      "title": "Audio Descriptions: triggered",
+      "text": "Triggered - The [application](glossary:application) offers [audio descriptions](glossary:audio-description) for important visual events (e.g. characters entering or leaving, major environmental changes, proximity to interactables)."
+    },
+    {
+      "id": "points-of-interest-role",
+      "title": "Points of Interest: role",
+      "text": "Spatial elements relevant to navigation have a [programmatically-determined](glossary:programmatically-determined) role and functional meaning. Relevant elements may include routes, navigation nodes, decision points, obstacles, landmarks, destinations, points of interest, risk zones and system reliability states."
+    },
+    {
+      "id": "assistive-technology-compatibility",
+      "title": "Assistive Technology Compatibility",
+      "text": "The [application](glossary:application) provides compatibility with [assistive technologies](glossary:assistive-technology)."
+    },
+    {
+      "id": "target-size",
+      "title": "Target Size",
+      "text": "The [application](glossary:application) contains a minimum size of hit [targets](glossary:target) as 48 x 48 pixels, or approximately 3° FOV.",
+      "flag": "Open question: 48 CSS pixels is about 1 degree, not 3. The group needs to decide which size was meant. See the glossary entries for [CSS pixel](glossary:css-pixel) and [degree of visual angle](glossary:degree-of-visual-angle)."
+    }
+  ]
+}

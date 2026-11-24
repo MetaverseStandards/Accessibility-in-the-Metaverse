@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Sample criteria with glossary links</title>
+<!-- Generated pages: edit terms.json, sample-criteria.json or template.html, then run build.py. -->
+<style>
+  :root { --bg: #f2f5f9; --surface: #fff; --fg: #141a26; --muted: #485268; --line: #cfd6e2; --link: #1d4fd7; --note: #e6eaf2; color-scheme: light; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #10141c; --surface: #181e29; --fg: #e8ecf3; --muted: #a3aec2; --line: #2b3445; --link: #8db4ff; --note: #232b3a; color-scheme: dark; }
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 1rem/1.6 system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
+  .wrap { max-width: 46rem; margin-inline: auto; padding: 1.5rem 1rem 4rem; overflow-wrap: break-word; }
+  .banner { border: 2px solid var(--link); border-radius: 8px; padding: .75rem 1rem; background: var(--surface); margin: 0; }
+  h1 { font-size: 1.9rem; line-height: 1.2; margin: 1.5rem 0 .5rem; }
+  h2 { font-size: 1.3rem; line-height: 1.3; margin: 2rem 0 .5rem; }
+  h3 { font-size: 1.15rem; line-height: 1.3; margin: 0 0 .25rem; }
+  article h2 { margin-top: 0; }
+  p { margin: .5rem 0; }
+  a { color: var(--link); text-underline-offset: .15em; }
+  a.term { text-decoration-style: dotted; text-decoration-thickness: 2px; }
+  a:focus-visible, article:focus-visible { outline: 3px solid var(--link); outline-offset: 3px; border-radius: 2px; }
+  article { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 1rem; margin: 1rem 0; scroll-margin-top: 1rem; }
+  article > span[id] { scroll-margin-top: 2rem; }
+  article:target, article:has(> span:target) { border: 3px solid var(--link); }
+  .meta { color: var(--muted); margin: .1rem 0; }
+  .note { background: var(--note); border-radius: 6px; padding: .6rem .8rem; }
+  .index { columns: 14rem; padding-left: 1.2rem; }
+  .index li { padding-block: .15rem; }
+  .key { margin: 0; }
+  .key div { margin: .35rem 0; }
+  .key dt { font-weight: 600; display: inline; }
+  .key dt::after { content: ": "; }
+  .key dd { display: inline; margin: 0; }
+  .skip { position: absolute; left: -999rem; }
+  .skip:focus { position: static; }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+<div class="wrap">
+<header><p class="banner"><strong>Prototype for discussion.</strong> Terms, wording, links and structure have not been approved by the Accessibility in the Metaverse Working Group.</p></header>
+<main id="main" tabindex="-1">
+<h1>Sample criteria with glossary links</h1>
+<p>Wording is from the public working document of 20 November 2026, with links added. Each term is linked the first time it appears in a criterion. Back to the <a href="index.html">glossary</a>.</p>
+<article id="avatar-inclusive-representation" tabindex="-1">
+<h2>Inclusive Representation</h2>
+<p>The <a class="term" href="index.html#application">application</a> provides user options for a customizable <a class="term" href="index.html#avatar">avatar</a>. A wide variety of identities is offered. This includes options for avatar height, body shape, skin color, hair, prosthetic limbs, assistive devices such as hearing aids, and so on.</p>
+</article>
+<article id="captions-live" tabindex="-1">
+<h2>Captions: live content</h2>
+<p>The <a class="term" href="index.html#application">application</a> provides <a class="term" href="index.html#captions">captions</a> for <a class="term" href="index.html#live">live</a> content, including user-generated speech in a multi-person application.</p>
+</article>
+<article id="captions-size" tabindex="-1">
+<h2>Caption formatting: size</h2>
+<p>The <a class="term" href="index.html#application">application</a> provides text with a minimum cap height of 0.7 <a class="term" href="index.html#degree-of-visual-angle">degrees</a>. This is a common baseline for readable <a class="term" href="index.html#captions">captions</a> in XR, but the ideal size depends on distance, field of view, and the <a class="term" href="index.html#head-mounted-display">headset</a>.</p>
+</article>
+<article id="captions-contrast" tabindex="-1">
+<h2>Caption formatting: contrast</h2>
+<p>The <a class="term" href="index.html#application">application</a> provides <a class="term" href="index.html#captions">captions</a> with a minimum <a class="term" href="index.html#contrast-ratio">contrast ratio</a> of 4.5:1 in typical viewing conditions. A solid color background is recommended to ensure consistent contrast across different environments.</p>
+</article>
+<article id="audio-descriptions-triggered" tabindex="-1">
+<h2>Audio Descriptions: triggered</h2>
+<p>Triggered - The <a class="term" href="index.html#application">application</a> offers <a class="term" href="index.html#audio-description">audio descriptions</a> for important visual events (e.g. characters entering or leaving, major environmental changes, proximity to interactables).</p>
+</article>
+<article id="points-of-interest-role" tabindex="-1">
+<h2>Points of Interest: role</h2>
+<p>Spatial elements relevant to navigation have a <a class="term" href="index.html#programmatically-determined">programmatically-determined</a> role and functional meaning. Relevant elements may include routes, navigation nodes, decision points, obstacles, landmarks, destinations, points of interest, risk zones and system reliability states.</p>
+</article>
+<article id="assistive-technology-compatibility" tabindex="-1">
+<h2>Assistive Technology Compatibility</h2>
+<p>The <a class="term" href="index.html#application">application</a> provides compatibility with <a class="term" href="index.html#assistive-technology">assistive technologies</a>.</p>
+</article>
+<article id="target-size" tabindex="-1">
+<h2>Target Size</h2>
+<p>The <a class="term" href="index.html#application">application</a> contains a minimum size of hit <a class="term" href="index.html#target">targets</a> as 48 x 48 pixels, or approximately 3° FOV.</p>
+<p class="note">Open question: 48 CSS pixels is about 1 degree, not 3. The group needs to decide which size was meant. See the glossary entries for <a class="term" href="index.html#css-pixel">CSS pixel</a> and <a class="term" href="index.html#degree-of-visual-angle">degree of visual angle</a>.</p>
+</article>
+</main>
+</div>
+</body>
+</html>
