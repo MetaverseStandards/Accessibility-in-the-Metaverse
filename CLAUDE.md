@@ -100,19 +100,12 @@ Work here means preparing and sharing material about XR accessibility, chiefly:
   live site. To publish, push `main` to `gh-pages` with `git push origin main:gh-pages`. Never edit `gh-pages` directly.
 - Ask before changing `gh-pages` or the Pages settings.
 - `.nojekyll` makes Pages serve the files as they are, without building them.
-- **Planned domain change (not in place yet).** We plan to move the site to a subdomain of metaverse-standards.org. The
-  proposed one is `xr-accessibility.metaverse-standards.org`, and MSF has not confirmed it.
-  - Until it works, keep using the github.io address in links. Keep links between our pages relative.
-  - MSF does two things first: verifies metaverse-standards.org in the GitHub organization's Pages settings, then adds a
-    CNAME record from the subdomain to `metaversestandards.github.io`, without the repository name. If the record is in
-    Cloudflare, it should be set to "DNS only".
-  - Don't add a `CNAME` file until the DNS record works. Publishing one can set the domain, which could redirect
-    visitors to an address that doesn't load.
-  - Then, with Dylan's OK: add `CNAME` to `main` with only the subdomain in it, and publish. Don't let GitHub add it only
-    to `gh-pages`, because the next push from `main` would be rejected.
-  - In the Pages settings, check the domain, and turn on "Enforce HTTPS" once the certificate is ready.
-  - Last, update the link in the README, check every page and the redirect from the github.io address, and remove this
-    note.
+- **Domain:** the site is at <https://xr-accessibility.metaverse-standards.org/>. MSF manages the DNS record, and the
+  github.io address redirects there.
+  - Keep `CNAME` in `main`. Publishing from `main` without it can remove the custom domain.
+  - Changing the domain in the Pages settings makes GitHub commit to `gh-pages`. Merge that commit into `main` before the
+    next publish, or the push will be rejected.
+  - Keep links between our pages relative.
 - Don't copy planning documents into this repo, commits, PRs, issues, or any public material until Dylan
   authorizes it.
 - **Don't build anything big yet.** That includes:

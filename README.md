@@ -10,7 +10,7 @@ Our goal is to generate insights, identify risks, and recommend strategies and b
 
 Ultimately, we will support the creation of comprehensive XR standards on par with the [Web Content Accessibility Guidelines](https://www.w3.org/TR/WCAG22/). This will enable organizations to know with certainty whether their XR applications are accessible or not, and open the door to the next phase of ethical growth of the metaverse.
 
-Our main project is the **MSF XR Accessibility Guidelines**: testable accessibility criteria and real-world examples for virtual, augmented, and mixed reality. Version 1.0 was released for public review in July 2026, and we are now working on version 2.0. [Read and comment on the XR Accessibility Guidelines working document](https://docs.google.com/document/d/1wRHflVnJhRqZh6IvVAbWZGm0qXrkcJ2RxdRNaQjsMdY/edit?usp=sharing). A website for the guidelines is coming soon. Until then, you can [try our draft demos and glossary on the website preview](https://metaversestandards.github.io/Accessibility-in-the-Metaverse/).
+Our main project is the **MSF XR Accessibility Guidelines**: testable accessibility criteria and real-world examples for virtual, augmented, and mixed reality. Version 1.0 was released for public review in July 2026, and we are now working on version 2.0. [Read and comment on the XR Accessibility Guidelines working document](https://docs.google.com/document/d/1wRHflVnJhRqZh6IvVAbWZGm0qXrkcJ2RxdRNaQjsMdY/edit?usp=sharing). A website for the guidelines is coming soon. Until then, you can [try our draft demos and glossary on the website preview](https://xr-accessibility.metaverse-standards.org/).
 
 [View Working Group Charter](https://portal.metaverse-standards.org/document/dl/7092)
 
