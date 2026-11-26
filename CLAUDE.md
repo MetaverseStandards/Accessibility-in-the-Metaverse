@@ -152,7 +152,7 @@ Follow MSF conventions wherever MSF has published them.
 - **Contributions:** the MSF org states that non-members' pull requests are reviewed by Forum membership before
   being accepted. Contributing docs should say so.
 - **Legal:**
-  - Code is under MIT (`LICENSE`) and documentation and other text under CC BY-SA 4.0 (`LICENSE-DOCS.md`), with
+  - Code is under MIT (`LICENSE`) and documentation and other text under CC BY-SA 4.0 (`LICENSE-DOCS.txt`), with
     Metaverse Standards Forum, Inc. as the copyright holder. The README's License section lists what's excluded: James
     Maki's collection, the MSF logos, and cited works.
   - Contributors, including commenters and feedback form respondents, agree to the same licenses. The README and the

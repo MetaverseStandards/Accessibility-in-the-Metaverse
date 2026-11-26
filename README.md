@@ -49,7 +49,7 @@ When you contribute, you agree that MSF may use and publish your contribution un
 ## License
 
 - **Code** (HTML, CSS, JavaScript and scripts) is under the [MIT License](LICENSE).
-- **Documentation and other written content**, including the text of our web pages, is under [CC BY-SA 4.0](LICENSE-DOCS.md).
+- **Documentation and other written content**, including the text of our web pages, is under [CC BY-SA 4.0](LICENSE-DOCS.txt).
 - Copyright © 2026 Metaverse Standards Forum, Inc.
 
 These are not covered:
