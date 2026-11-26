@@ -152,9 +152,15 @@ Follow MSF conventions wherever MSF has published them.
 - **Contributions:** the MSF org states that non-members' pull requests are reviewed by Forum membership before
   being accepted. Contributing docs should say so.
 - **Legal:**
-  - MSF has published no license for documents. Its site terms are "© Metaverse Standards Forum, all rights
-    reserved".
-  - Don't add a LICENSE, copyright line, IPR statement, or disclaimer without Dylan's sign-off.
+  - Code is under MIT (`LICENSE`) and documentation and other text under CC BY-SA 4.0 (`LICENSE-DOCS.md`), with
+    Metaverse Standards Forum, Inc. as the copyright holder. The README's License section lists what's excluded: James
+    Maki's collection, the MSF logos, and cited works.
+  - Contributors, including commenters and feedback form respondents, agree to the same licenses. The README and the
+    home page say so.
+  - Every page ends with the same footer: the copyright and license line, and links to MSF's Privacy Policy, Terms
+    of Use, and Logos and Trademarks page. The glossary's footer is in `template.html`.
+  - The trademark owner is MSF, not Khronos.
+  - Don't change the licenses or add an IPR statement or disclaimer without Dylan's sign-off.
 - **Group status:** the group is a subgroup of the 3D Assets Working Group.
   - Use this status even if another page describes the group differently.
   - Check with Dylan before writing new public descriptions of where the group sits in MSF.

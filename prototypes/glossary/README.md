@@ -15,7 +15,7 @@ folder).
 
 ## What it leaves out
 
-- **Source definitions.** Entries link to WCAG and MSF instead of copying their text, because licensing isn't settled.
+- **Source definitions.** Entries link to WCAG and MSF instead of copying their text, because their text is under its own licenses.
   One short MSF quote ("immersive") shows how a quoted definition would look.
 - **Most terms.** Only 18 are included.
 

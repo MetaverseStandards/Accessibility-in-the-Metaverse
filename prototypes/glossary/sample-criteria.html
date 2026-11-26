@@ -37,6 +37,9 @@
   .key dd { display: inline; margin: 0; }
   .skip { position: absolute; left: -999rem; }
   .skip:focus { position: static; }
+  .site-footer { border-top: 1px solid var(--line); margin-top: 2rem; padding-top: 1rem; color: var(--muted); font-size: .9rem; }
+  .site-footer p { margin: 0; }
+  .footer-links { list-style: none; padding: 0; margin: .5rem 0 0; display: flex; flex-wrap: wrap; gap: .25rem 1.5rem; }
 </style>
 </head>
 <body>
@@ -80,6 +83,14 @@
 <p class="note">Open question: 48 CSS pixels is about 1 degree, not 3. The group needs to decide which size was meant. See the glossary entries for <a class="term" href="index.html#css-pixel">CSS pixel</a> and <a class="term" href="index.html#degree-of-visual-angle">degree of visual angle</a>.</p>
 </article>
 </main>
+<footer class="site-footer">
+  <p>© 2026 Metaverse Standards Forum, Inc. Text is under <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> and code under the <a href="https://github.com/MetaverseStandards/Accessibility-in-the-Metaverse/blob/main/LICENSE">MIT License</a>. MSF logos are trademarks of the Metaverse Standards Forum.</p>
+  <ul class="footer-links" role="list">
+    <li><a href="https://metaverse-standards.org/privacy-policy">Privacy Policy</a></li>
+    <li><a href="https://metaverse-standards.org/terms-of-use/">Terms of Use</a></li>
+    <li><a href="https://metaverse-standards.org/about/logos-trademarks-and-guidelines/">Logos and Trademarks</a></li>
+  </ul>
+</footer>
 </div>
 </body>
 </html>

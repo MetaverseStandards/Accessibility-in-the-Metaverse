@@ -209,6 +209,9 @@
   }
   .limits { margin: 0; padding-left: 1.2em; max-width: 72ch; }
   .limits li + li { margin-top: 6px; }
+  .site-footer { border-top: 1px solid var(--line); margin-top: 2rem; padding-top: 1rem; color: var(--muted); font-size: .9rem; }
+  .site-footer p { margin: 0; }
+  .footer-links { list-style: none; padding: 0; margin: .5rem 0 0; display: flex; flex-wrap: wrap; gap: .25rem 1.5rem; }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/aframe@1.6.0/dist/aframe-v1.6.0.min.js"></script>
 </head>
@@ -353,6 +356,15 @@
 
   <p><a href="../../">Back to the site home page</a></p>
 </main>
+
+<footer class="site-footer wrap">
+  <p>© 2026 Metaverse Standards Forum, Inc. Text is under <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> and code under the <a href="https://github.com/MetaverseStandards/Accessibility-in-the-Metaverse/blob/main/LICENSE">MIT License</a>. MSF logos are trademarks of the Metaverse Standards Forum.</p>
+  <ul class="footer-links" role="list">
+    <li><a href="https://metaverse-standards.org/privacy-policy">Privacy Policy</a></li>
+    <li><a href="https://metaverse-standards.org/terms-of-use/">Terms of Use</a></li>
+    <li><a href="https://metaverse-standards.org/about/logos-trademarks-and-guidelines/">Logos and Trademarks</a></li>
+  </ul>
+</footer>
 
 <script>
 (function () {

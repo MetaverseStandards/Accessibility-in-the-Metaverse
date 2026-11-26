@@ -40,6 +40,24 @@ Contact us: [accessibility-chair@lists.metaverse-standards.org](mailto:accessibi
 - **Dylan Fox**, Yahoo ([Dylan Fox on LinkedIn](https://www.linkedin.com/in/dylanrfox/))
 - **James Maki**, [Inclusive Reality](https://inclusivereality.com) ([James Maki on LinkedIn](https://www.linkedin.com/in/jamesmaki/))
 
+## Contributing
+
+You don't have to be an MSF member to help. You can comment on the working document, fill out our feedback form, or open an issue or pull request here. Pull requests from people who are not MSF members are reviewed by the Forum membership before they are accepted.
+
+When you contribute, you agree that MSF may use and publish your contribution under the licenses below: CC BY-SA 4.0 for comments, feedback and other text, and MIT for code. Only contribute work that you have the right to share.
+
+## License
+
+- **Code** (HTML, CSS, JavaScript and scripts) is under the [MIT License](LICENSE).
+- **Documentation and other written content**, including the text of our web pages, is under [CC BY-SA 4.0](LICENSE-DOCS.md).
+- Copyright © 2026 Metaverse Standards Forum, Inc.
+
+These are not covered:
+
+- `xr-accessibility-guidelines-collection.md` is Copyright © 2024 James Maki, all rights reserved.
+- The MSF logos in `assets/msf/` are trademarks of the Metaverse Standards Forum. See the [MSF logo and trademark guidelines](https://metaverse-standards.org/about/logos-trademarks-and-guidelines/).
+- Standards and other works we cite or link to, such as WCAG, keep their own licenses.
+
 ## Stay Informed
 
 Subscribe to receive the latest news, updates, and more from the Metaverse Standards Forum.  Membership is not required to receive the newsletter and you can unsubscribe at any time.
